@@ -1,25 +1,21 @@
-"use client";
+<script lang="ts">
+  import { onMount } from "svelte";
 
-import { useEffect, useRef } from "react";
+  interface GlitchBar {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    color: string;
+    speed: number;
+    opacity: number;
+    offset: number;
+  }
 
-interface GlitchBar {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  color: string;
-  speed: number;
-  opacity: number;
-  offset: number;
-}
+  let canvas: HTMLCanvasElement;
 
-export default function GlitchBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
+  onMount(() => {
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -33,11 +29,9 @@ export default function GlitchBackground() {
 
     // Vaporwave color palette
     const colors = ["#090014", "#FF00FF", "#00FFFF", "#1a103c", "#FF9900"];
-
     const glitchBars: GlitchBar[] = [];
     const numBars = 50;
 
-    // Initialize glitch bars
     for (let i = 0; i < numBars; i++) {
       glitchBars.push({
         x: Math.random() * canvas.width,
@@ -55,7 +49,6 @@ export default function GlitchBackground() {
     let frameCount = 0;
 
     const animate = () => {
-      // Vaporwave void background
       ctx.fillStyle = "#090014";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -71,20 +64,8 @@ export default function GlitchBackground() {
           bar.offset = Math.random() * 30 - 15;
         }
 
-        const mainX =
-          bar.x + (Math.random() > 0.9 ? Math.random() * 10 - 5 : 0);
+        const mainX = bar.x + (Math.random() > 0.9 ? Math.random() * 10 - 5 : 0);
 
-        // Red channel offset
-        // ctx.fillStyle = "#6A041D";
-        // ctx.globalAlpha = bar.opacity * 0.6;
-        // ctx.fillRect(mainX - bar.offset, bar.y, bar.width, bar.height);
-
-        // // Green channel offset
-        // ctx.fillStyle = "#00ff00";
-        // ctx.globalAlpha = bar.opacity * 0.5;
-        // ctx.fillRect(mainX + bar.offset * 0.5, bar.y, bar.width, bar.height);
-
-        // Blue channel (main)
         ctx.fillStyle = bar.color;
         ctx.globalAlpha = bar.opacity;
         ctx.fillRect(mainX, bar.y, bar.width, bar.height);
@@ -131,7 +112,6 @@ export default function GlitchBackground() {
       });
 
       ctx.globalAlpha = 1;
-
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -141,13 +121,11 @@ export default function GlitchBackground() {
       window.removeEventListener("resize", resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  });
+</script>
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full z-[-1]"
-      style={{ imageRendering: "pixelated" }}
-    />
-  );
-}
+<canvas
+  bind:this={canvas}
+  class="absolute inset-0 w-full h-full z-[-1]"
+  style="image-rendering: pixelated;"
+></canvas>

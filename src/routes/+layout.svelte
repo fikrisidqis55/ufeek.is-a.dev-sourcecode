@@ -1,0 +1,13 @@
+<script lang="ts">
+  import "../lib/styles/globals.css";
+  import { onMount } from "svelte";
+  import GlitchFavicon from "$lib/components/GlitchFavicon.svelte";
+  import { inject } from "@vercel/analytics";
+
+  onMount(() => {
+    inject();
+  });
+</script>
+
+<GlitchFavicon />
+<slot />
