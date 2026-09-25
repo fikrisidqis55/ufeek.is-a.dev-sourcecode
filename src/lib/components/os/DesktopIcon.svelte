@@ -11,6 +11,9 @@
     if (windowId === 'doom') {
       width = 680;
       height = 520;
+    } else if (windowId === 'will-remember') {
+      width = 780;
+      height = 560;
     }
     osState.openWindow({ id: windowId, title, icon, x: x + 100, y: 20, width, height });
     osState.selectIcon(null);

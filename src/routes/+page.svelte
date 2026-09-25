@@ -6,6 +6,7 @@
   import Contact from "$lib/components/Contact.svelte";
   import Hero from "$lib/components/Hero.svelte";
   import Doom from "$lib/components/Doom.svelte";
+  import WillRemember from "$lib/components/will-remember/WillRemember.svelte";
   import GlitchingBackground from "$lib/components/GlitchingBackground.svelte";
   import CursorFollower from "$lib/components/CursorFollower.svelte";
   
@@ -23,12 +24,13 @@
 
   const desktopIcons = [
     { id: 'welcome', title: 'My Computer', icon: '💻', x: 20, y: 20 },
-    { id: 'about', title: 'About Me', icon: '📝', x: 20, y: 120 },
+    { id: 'about', title: 'About Me', icon: '👤', x: 20, y: 120 },
     { id: 'experience', title: 'Experience', icon: '📈', x: 20, y: 220 },
     { id: 'techstack', title: 'Tech Stack', icon: '⚙️', x: 20, y: 320 },
     { id: 'projects', title: 'Projects', icon: '📂', x: 20, y: 420 },
     { id: 'contact', title: 'Contact', icon: '✉️', x: 20, y: 520 },
     { id: 'doom', title: 'DOOM.EXE', icon: '💀', x: 20, y: 620 },
+    { id: 'will-remember', title: 'will-remember', icon: '📝', x: 120, y: 20 },
   ];
 </script>
 
@@ -95,6 +97,12 @@
   <Window windowId="doom">
     <div class="h-full w-full flex flex-col min-h-0">
       <Doom />
+    </div>
+  </Window>
+
+  <Window windowId="will-remember">
+    <div class="h-full w-full flex flex-col min-h-0">
+      <WillRemember />
     </div>
   </Window>
 </div>

@@ -33,10 +33,18 @@
     <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
 
     <button 
-      class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left"
-      onclick={() => osState.openWindow({ id: 'about', title: 'About Me', icon: '📝', x: 200, y: 150 })}
+      class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left font-bold"
+      onclick={() => osState.openWindow({ id: 'will-remember', title: 'will-remember', icon: '📝', x: 120, y: 40, width: 780, height: 560 })}
     >
       <span class="text-xl">📝</span>
+      <span>will-remember</span>
+    </button>
+
+    <button 
+      class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left"
+      onclick={() => osState.openWindow({ id: 'about', title: 'About Me', icon: '👤', x: 200, y: 150 })}
+    >
+      <span class="text-xl">👤</span>
       <span>About Me</span>
     </button>
     
