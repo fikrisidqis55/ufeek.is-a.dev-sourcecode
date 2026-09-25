@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { Send, MessageSquare } from "@lucide/svelte";
-
   let formData = {
     name: "",
     email: "",
@@ -41,97 +39,79 @@
   }
 </script>
 
-<section id="contact" class="relative pt-24">
-  <div class="container mx-auto px-6 relative z-6s">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl md:text-5xl font-heading font-black mb-4 uppercase text-tertiary vaporwave-glow-orange">
-        Let's Connect
-      </h2>
-      <p class="max-w-2xl mx-auto font-mono text-foreground/70">
-        Have a project in mind or want to chat? Feel free to reach out using the form below.
-      </p>
-    </div>
-
-    <div class="max-w-2xl mx-auto">
-      <div class="p-8 border border-primary/30 border-t-2 border-t-tertiary bg-card/80 backdrop-blur-md rounded-none shadow-neon-orange">
-        <div class="flex items-center justify-center mb-8">
-          <div class="w-16 h-16 border-2 border-tertiary rounded-none flex items-center justify-center text-tertiary rotate-45 hover:rotate-90 transition-transform duration-200 shadow-neon-orange">
-            <MessageSquare size={28} class="-rotate-45" />
-          </div>
-        </div>
-
-        {#if success}
-          <div class="mb-6 p-4 bg-card border-2 border-tertiary rounded-none font-mono text-tertiary shadow-[0_0_15px_rgba(255,153,0,0.4)] animate-in fade-in">
-            Your message has been sent successfully! I'll get back to you soon.
-          </div>
-        {/if}
-
-        {#if error}
-          <div class="mb-6 p-4 bg-card border-2 border-primary rounded-none font-mono text-primary shadow-[0_0_15px_rgba(255,0,255,0.3)] animate-in fade-in">
-            There was an error sending your message. Please try again later.
-          </div>
-        {/if}
-
-        <form on:submit|preventDefault={handleSubmit}>
-          <div class="mb-6">
-            <label for="contact-name" class="block text-lg font-mono uppercase tracking-wider mb-2 text-tertiary">
-              Name
-            </label>
-            <input
-              id="contact-name"
-              type="text"
-              name="name"
-              bind:value={formData.name}
-              class="w-full px-3 py-2 border-b-2 border-tertiary bg-black text-tertiary font-mono text-lg rounded-none focus-visible:border-tertiary focus-visible:shadow-neon-orange focus-visible:outline-none placeholder:text-tertiary/50"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div class="mb-6">
-            <label for="contact-email" class="block text-lg font-mono uppercase tracking-wider mb-2 text-tertiary">
-              Email
-            </label>
-            <input
-              id="contact-email"
-              type="email"
-              name="email"
-              bind:value={formData.email}
-              class="w-full px-3 py-2 border-b-2 border-tertiary bg-black text-tertiary font-mono text-lg rounded-none focus-visible:border-tertiary focus-visible:shadow-neon-orange focus-visible:outline-none placeholder:text-tertiary/50"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div class="mb-6">
-            <label for="contact-message" class="block text-lg font-mono uppercase tracking-wider mb-2 text-tertiary">
-              Message
-            </label>
-            <textarea
-              id="contact-message"
-              name="message"
-              bind:value={formData.message}
-              rows="5"
-              class="w-full px-3 py-2 border-b-2 border-tertiary bg-black text-tertiary font-mono text-lg rounded-none resize-none focus-visible:border-tertiary focus-visible:shadow-neon-orange focus-visible:outline-none placeholder:text-tertiary/50"
-              required
-              disabled={loading}
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="group w-full px-6 py-4 h-14 text-lg font-mono uppercase tracking-wider border-2 border-tertiary bg-transparent text-tertiary rounded-none -skew-x-12 transition-all duration-200 ease-linear hover:skew-x-0 hover:bg-tertiary hover:text-black hover:shadow-neon-orange flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={loading}
-          >
-            <span class="inline-block skew-x-12 group-hover:skew-x-0 transition-transform duration-200">
-              {loading ? "Sending..." : "Send Message"}
-            </span>
-            {#if !loading}
-              <Send size={18} class="inline-block skew-x-12 group-hover:skew-x-0 transition-transform duration-200" />
-            {/if}
-          </button>
-        </form>
-      </div>
+<div class="h-full w-full bg-win98-surface p-4 flex flex-col text-black font-[Tahoma,sans-serif]">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="text-4xl">✉️</div>
+    <div>
+      <h2 class="text-xl font-bold">Internet Mail</h2>
+      <p class="text-sm">Compose New Message</p>
     </div>
   </div>
-</section>
+
+  <div class="flex-1 win98-border-inset bg-win98-surface p-4 flex flex-col gap-4">
+    {#if success}
+      <div class="bg-blue-100 border border-blue-400 text-blue-800 p-2 text-sm flex gap-2 items-center">
+        <span>ℹ️</span> Message sent successfully.
+      </div>
+    {/if}
+
+    {#if error}
+      <div class="bg-red-100 border border-red-400 text-red-800 p-2 text-sm flex gap-2 items-center">
+        <span>❌</span> Error sending message.
+      </div>
+    {/if}
+
+    <form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-4 h-full">
+      <div class="flex flex-col gap-1">
+        <label for="contact-name" class="text-sm">To:</label>
+        <input
+          id="contact-name"
+          type="text"
+          name="name"
+          bind:value={formData.name}
+          class="w-full px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50"
+          placeholder="Your Name..."
+          required
+          disabled={loading}
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="contact-email" class="text-sm">Reply-To (Email):</label>
+        <input
+          id="contact-email"
+          type="email"
+          name="email"
+          bind:value={formData.email}
+          class="w-full px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50"
+          placeholder="Your Email..."
+          required
+          disabled={loading}
+        />
+      </div>
+
+      <div class="flex flex-col gap-1 flex-1">
+        <label for="contact-message" class="text-sm">Message:</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          bind:value={formData.message}
+          class="w-full flex-1 px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50 resize-none"
+          placeholder="Type your message here..."
+          required
+          disabled={loading}
+        ></textarea>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-gray-400">
+        <button
+          type="submit"
+          class="win98-button font-bold px-6 py-1 disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Sending..." : "Send"}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

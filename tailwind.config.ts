@@ -7,17 +7,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Vaporwave color palette
+        // Windows 98 color palette
         white: "#ffffff",
-        primary: "#FF00FF", // Hot Magenta
+        win98: {
+          bg: "#008080", // Teal Desktop
+          surface: "#c0c0c0", // Window background
+          text: "#000000",
+          "title-active": "#000080", // Dark blue
+          "title-inactive": "#808080",
+          "title-text": "#ffffff",
+          "border-light": "#dfdfdf",
+          "border-dark": "#808080",
+          "border-darker": "#000000",
+        },
+        primary: "#FF00FF", // Hot Magenta (keeping for legacy parts)
         secondary: "#00FFFF", // Electric Cyan
         tertiary: "#FF9900", // Sunset Orange
-        background: "#090014", // The Void - near black with purple tint
-        foreground: "#E0E0E0", // Chrome Text
-        card: "#1a103c", // Card Background (deep purple)
-        "card-border": "#2D1B4E", // Default border
-        "card-border-active": "#00FFFF", // Active border
-        // Legacy colors (keeping for compatibility)
+        background: "#008080", // Teal Desktop
+        foreground: "#000000", 
+        card: "#c0c0c0", 
+        "card-border": "#808080",
+        "card-border-active": "#000000",
+        // Legacy colors
         "legacy-primary": "#D63200",
         "legacy-secondary": "#FF10F0",
         "legacy-tertiary": "#236CFF",
