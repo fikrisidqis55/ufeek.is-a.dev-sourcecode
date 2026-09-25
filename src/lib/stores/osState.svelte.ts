@@ -9,6 +9,7 @@ export type WindowConfig = {
   height?: number;
   x?: number;
   y?: number;
+  center?: boolean;
 };
 
 export function createOSState() {
@@ -27,6 +28,9 @@ export function createOSState() {
     if (existing) {
       existing.isOpen = true;
       existing.isMinimized = false;
+      if (config.center !== undefined) existing.center = config.center;
+      if (config.width !== undefined) existing.width = config.width;
+      if (config.height !== undefined) existing.height = config.height;
       focusWindow(config.id);
     } else {
       windows.push({

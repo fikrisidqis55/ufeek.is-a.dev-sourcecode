@@ -12,17 +12,54 @@
   let position = $state({ x: 0, y: 0 });
   let isMaximized = $state(false);
   let preMaxPosition = $state({ x: 0, y: 0 });
+  let windowEl = $state<HTMLDivElement | null>(null);
+  let hasManualPosition = $state(false);
 
-  // Initialize position once when the config is available
+  function calculateCenterPosition() {
+    if (typeof window === 'undefined') return { x: 50, y: 50 };
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight - 40; // Exclude bottom taskbar (40px)
+    const winW = windowEl?.offsetWidth || winConfig?.width || 520;
+    const winH = windowEl?.offsetHeight || winConfig?.height || 540;
+
+    const x = Math.max(10, Math.floor((screenW - winW) / 2));
+    const y = Math.max(10, Math.floor((screenH - winH) / 2));
+    return { x, y };
+  }
+
+  // Initialize position when config or window element becomes available
   $effect(() => {
-    if (winConfig && winConfig.x !== undefined && position.x === 0) {
-      position = { x: winConfig.x || 50, y: winConfig.y || 50 };
+    if (winConfig && winConfig.isOpen && !winConfig.isMinimized && !hasManualPosition) {
+      if (winConfig.center || (winConfig.x === undefined && winConfig.y === undefined)) {
+        position = calculateCenterPosition();
+      } else if (winConfig.x !== undefined && position.x === 0 && position.y === 0) {
+        position = { x: winConfig.x, y: winConfig.y ?? 50 };
+      }
     }
+  });
+
+  // Handle window resize dynamically when window is centered and hasn't been manually dragged
+  $effect(() => {
+    function handleResize() {
+      if (
+        !hasManualPosition &&
+        winConfig?.isOpen &&
+        !winConfig?.isMinimized &&
+        !isMaximized &&
+        (winConfig?.center || (winConfig?.x === undefined && winConfig?.y === undefined))
+      ) {
+        position = calculateCenterPosition();
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   });
 
   function handleMousedown(e: MouseEvent) {
     if (isMaximized) return;
     osState.focusWindow(windowId);
+    hasManualPosition = true;
     isDragging = true;
     dragOffset = {
       x: e.clientX - position.x,
@@ -72,6 +109,7 @@
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <div
+    bind:this={windowEl}
     class="win98-window win98-border-outset absolute flex flex-col pointer-events-auto"
     role="presentation"
     style="

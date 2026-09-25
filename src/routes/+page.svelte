@@ -16,9 +16,15 @@
   import { osState } from "$lib/stores/osState.svelte";
 
   onMount(() => {
-    // Open a default welcome window
+    // Open a default welcome window centered at any resolution
     if (osState.windows.length === 0) {
-      osState.openWindow({ id: 'welcome', title: 'Welcome to ufeek OS', icon: '💻', x: 50, y: 10 });
+      osState.openWindow({ 
+        id: 'welcome', 
+        title: 'Welcome to ufeek OS', 
+        icon: '💻', 
+        center: true, 
+        width: 520 
+      });
     }
   });
 

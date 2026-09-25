@@ -8,14 +8,27 @@
   function handleDblClick() {
     let width: number | undefined = undefined;
     let height: number | undefined = undefined;
+    let center: boolean | undefined = undefined;
     if (windowId === 'doom') {
       width = 680;
       height = 520;
     } else if (windowId === 'will-remember') {
       width = 780;
       height = 560;
+    } else if (windowId === 'welcome') {
+      width = 520;
+      center = true;
     }
-    osState.openWindow({ id: windowId, title, icon, x: x + 100, y: 20, width, height });
+    osState.openWindow({ 
+      id: windowId, 
+      title, 
+      icon, 
+      x: center ? undefined : x + 100, 
+      y: center ? undefined : 20, 
+      width, 
+      height, 
+      center 
+    });
     osState.selectIcon(null);
   }
 </script>
