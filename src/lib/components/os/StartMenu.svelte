@@ -15,18 +15,18 @@
   class="fixed left-0 bottom-10 w-64 win98-border-outset z-[9999] flex flex-col bg-win98-surface"
 >
   <div class="flex items-center gap-2 p-2 bg-win98-title-active text-win98-title-text font-bold">
-    <span>🪟</span>
+    <img src="/icons/win98/windows_flag.png" alt="" class="w-4 h-4 pointer-events-none select-none" style="image-rendering: pixelated;" />
     <span>Ufeek 98</span>
   </div>
   
   <div class="flex-1 flex flex-col p-1 gap-1">
     <a href="https://github.com/fikrisidqis" target="_blank" class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer">
-      <span class="text-xl">🐱</span>
+      <img src="/icons/win98/network.png" alt="" class="w-5 h-5 pointer-events-none select-none" style="image-rendering: pixelated;" />
       <span>GitHub</span>
     </a>
     
     <a href="https://www.linkedin.com/in/fikrisidqis/" target="_blank" class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer">
-      <span class="text-xl">💼</span>
+      <img src="/icons/win98/briefcase.png" alt="" class="w-5 h-5 pointer-events-none select-none" style="image-rendering: pixelated;" />
       <span>LinkedIn</span>
     </a>
 
@@ -34,25 +34,25 @@
 
     <button 
       class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left font-bold"
-      onclick={() => osState.openWindow({ id: 'will-remember', title: 'will-remember', icon: '📝', x: 120, y: 40, width: 780, height: 560 })}
+      onclick={() => osState.openWindow({ id: 'will-remember', title: 'will-remember', icon: '/icons/win98/notepad.png', x: 120, y: 40, width: 780, height: 560 })}
     >
-      <span class="text-xl">📝</span>
+      <img src="/icons/win98/notepad.png" alt="" class="w-5 h-5 pointer-events-none select-none" style="image-rendering: pixelated;" />
       <span>will-remember</span>
     </button>
 
     <button 
       class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left"
-      onclick={() => osState.openWindow({ id: 'about', title: 'About Me', icon: '👤', x: 200, y: 150 })}
+      onclick={() => osState.openWindow({ id: 'about', title: 'About Me', icon: '/icons/win98/about.png', x: 200, y: 150 })}
     >
-      <span class="text-xl">👤</span>
+      <img src="/icons/win98/about.png" alt="" class="w-5 h-5 pointer-events-none select-none" style="image-rendering: pixelated;" />
       <span>About Me</span>
     </button>
     
     <button 
       class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text cursor-pointer text-left"
-      onclick={() => osState.openWindow({ id: 'contact', title: 'Contact', icon: '✉️', x: 250, y: 200 })}
+      onclick={() => osState.openWindow({ id: 'contact', title: 'Contact', icon: '/icons/win98/contact.png', x: 250, y: 200 })}
     >
-      <span class="text-xl">✉️</span>
+      <img src="/icons/win98/contact.png" alt="" class="w-5 h-5 pointer-events-none select-none" style="image-rendering: pixelated;" />
       <span>Contact</span>
     </button>
   </div>

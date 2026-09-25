@@ -94,8 +94,8 @@
             class="flex flex-col items-center gap-1 w-24 cursor-pointer group"
             on:click={() => (selectedProject = project)}
           >
-            <div class="w-12 h-12 flex items-center justify-center text-4xl group-active:brightness-75">
-              💿
+            <div class="w-12 h-12 flex items-center justify-center group-active:brightness-75">
+              <img src="/icons/win98/executable.png" alt="" class="w-8 h-8 select-none pointer-events-none" style="image-rendering: pixelated;" />
             </div>
             <span class="text-xs text-center px-1 leading-tight group-hover:underline group-active:bg-win98-title-active group-active:text-white">
               {project.title}.exe
@@ -117,7 +117,7 @@
       <!-- Main Content -->
       <div class="flex-1 win98-border-inset bg-white p-4 overflow-y-auto flex flex-col gap-4">
         <div class="flex gap-4 items-start border-b border-gray-300 pb-4">
-          <div class="text-6xl">💿</div>
+          <img src="/icons/win98/executable.png" alt="" class="w-12 h-12 select-none pointer-events-none flex-shrink-0" style="image-rendering: pixelated;" />
           <div>
             <h2 class="text-2xl font-bold">{selectedProject.title}</h2>
             <p class="text-sm text-gray-600 mt-1">{selectedProject.description}</p>
@@ -139,8 +139,8 @@
             <legend class="px-2 text-sm font-bold bg-white text-gray-800 ml-2">Dependencies (.dll)</legend>
             <div class="flex flex-wrap gap-2 pt-2">
               {#each selectedProject.technologies as tech}
-                <div class="flex items-center gap-1 bg-gray-200 win98-border-outset px-2 py-1 text-xs">
-                  <span>⚙️</span>
+                <div class="flex items-center gap-1.5 bg-gray-200 win98-border-outset px-2 py-1 text-xs">
+                  <img src="/icons/win98/techstack.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
                   <span>{tech}</span>
                 </div>
               {/each}

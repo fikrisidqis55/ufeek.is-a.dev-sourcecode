@@ -20,11 +20,13 @@
 <div class="h-full w-full bg-white flex flex-col text-black font-[Tahoma,sans-serif]">
   <!-- Toolbar -->
   <div class="flex items-center gap-2 p-1 bg-win98-surface win98-border-outset mb-1">
-    <button class="win98-button flex items-center gap-1" on:click={() => viewMode = 'icons'}>
-      <span class="text-xs">📂</span> Icons
+    <button class="win98-button flex items-center gap-1.5" on:click={() => viewMode = 'icons'}>
+      <img src="/icons/win98/projects.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
+      <span class="text-xs">Icons</span>
     </button>
-    <button class="win98-button flex items-center gap-1" on:click={() => viewMode = 'details'}>
-      <span class="text-xs">📄</span> Details
+    <button class="win98-button flex items-center gap-1.5" on:click={() => viewMode = 'details'}>
+      <img src="/icons/win98/document.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
+      <span class="text-xs">Details</span>
     </button>
   </div>
 

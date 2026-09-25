@@ -126,21 +126,23 @@
     <span class="font-bold text-[11px] text-gray-800 uppercase tracking-wider px-1">Explorer</span>
     <div class="flex items-center gap-1">
       <button 
-        class="win98-button p-0.5 px-1 text-[11px]" 
+        class="win98-button p-0.5 px-1 text-[11px] flex items-center gap-0.5" 
         onclick={() => willRememberStore.createNewTab()}
         title="Create Note"
       >
-        📄+
+        <img src="/icons/win98/notepad.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
+        <span>+</span>
       </button>
       <button 
-        class="win98-button p-0.5 px-1 text-[11px]" 
+        class="win98-button p-0.5 px-1 text-[11px] flex items-center gap-0.5" 
         onclick={() => {
           isCreatingFolder = true;
           playClickSound();
         }}
         title="Create Folder"
       >
-        📁+
+        <img src="/icons/win98/folder_closed.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
+        <span>+</span>
       </button>
     </div>
   </div>
@@ -216,7 +218,12 @@
           onclick={() => handleSelectNote(note.id)}
           title="Drag to move to folder"
         >
-          <span>{note.title.endsWith('.md') ? '📝' : '📄'}</span>
+          <img 
+            src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
+            alt="" 
+            class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
+            style="image-rendering: pixelated;" 
+          />
           <span class="truncate">{note.title}</span>
         </div>
       {/each}
@@ -233,7 +240,7 @@
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
-            class="flex items-center gap-1 px-1 py-0.5 cursor-pointer transition-colors {isDragOver
+            class="flex items-center gap-1.5 px-1 py-0.5 cursor-pointer transition-colors {isDragOver
               ? 'bg-win98-title-active text-white font-bold border-2 border-dashed border-white'
               : 'hover:bg-gray-100'}"
             ondragover={(e) => handleFolderDragOver(e, folder.id)}
@@ -246,7 +253,12 @@
             <span class="w-3 text-[10px] font-mono text-center font-bold">
               {folder.isExpanded ? '[-]' : '[+]'}
             </span>
-            <span>{folder.icon || '📁'}</span>
+            <img 
+              src={folder.isExpanded ? '/icons/win98/folder_open.png' : '/icons/win98/folder_closed.png'} 
+              alt="" 
+              class="w-4 h-4 pointer-events-none select-none flex-shrink-0" 
+              style="image-rendering: pixelated;" 
+            />
             <span class="font-bold truncate text-[11px]">{folder.name}</span>
             <span class="text-[10px] {isDragOver ? 'text-white' : 'text-gray-400'} ml-auto">({folderNotes.length})</span>
           </div>
@@ -269,7 +281,12 @@
                   onclick={() => handleSelectNote(note.id)}
                   title="Drag file to another folder"
                 >
-                  <span class="text-[11px]">{note.title.endsWith('.md') ? '📝' : '📄'}</span>
+                  <img 
+                    src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
+                    alt="" 
+                    class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
+                    style="image-rendering: pixelated;" 
+                  />
                   <span class="truncate">{note.title}</span>
                 </div>
               {/each}
@@ -315,7 +332,12 @@
             onclick={() => handleSelectNote(note.id)}
             title="Drag file to folder"
           >
-            <span>{note.title.endsWith('.md') ? '📝' : '📄'}</span>
+            <img 
+              src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
+              alt="" 
+              class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
+              style="image-rendering: pixelated;" 
+            />
             <span class="truncate">{note.title}</span>
           </div>
         {/each}
@@ -323,11 +345,12 @@
         <!-- Dropzone indicator when dragging an item -->
         {#if draggedNoteId}
           <div 
-            class="mt-2 p-2 win98-border-inset text-center text-[10px] transition-colors {dragOverTargetId === '__root__'
+            class="mt-2 p-2 win98-border-inset text-center text-[10px] flex items-center justify-center gap-1.5 transition-colors {dragOverTargetId === '__root__'
               ? 'bg-win98-title-active text-white font-bold border-2 border-dashed border-white'
               : 'bg-[#f4f4f4] text-gray-600 border border-dashed border-gray-400'}"
           >
-            📥 Drop here for Root
+            <img src="/icons/win98/folder_open.png" alt="" class="w-3.5 h-3.5 pointer-events-none select-none" style="image-rendering: pixelated;" />
+            <span>Drop here for Root</span>
           </div>
         {/if}
       </div>

@@ -6,7 +6,7 @@
       date: "June 2022 - Present",
       description:
         "Developing web applications using React.js and Next.js. Reworking old applications with modern tech stack.",
-      icon: "🌐"
+      icon: "/icons/win98/network.png"
     },
     {
       title: "Backend Developer",
@@ -14,7 +14,7 @@
       date: "Des 2020 - June 2022",
       description:
         "Developing APIs for Agent Recruitment Applications (My Zurich Advisor & MiRecruit).",
-      icon: "⚙️"
+      icon: "/icons/win98/techstack.png"
     },
     {
       title: "Back End Developer (Intern)",
@@ -22,14 +22,14 @@
       date: "Oct 2019 - Mar 2020",
       description:
         "Created several APIs and integrated them with NoSQL databases.",
-      icon: "🔌"
+      icon: "/icons/win98/executable.png"
     },
   ];
 </script>
 
 <div class="h-full w-full bg-win98-surface p-4 flex flex-col gap-4 text-black">
   <div class="flex gap-2 items-center mb-2">
-    <span class="text-3xl">📈</span>
+    <img src="/icons/win98/experience.png" alt="" class="w-8 h-8 select-none pointer-events-none" style="image-rendering: pixelated;" />
     <h2 class="text-2xl font-bold">Professional Experience</h2>
   </div>
 
@@ -41,8 +41,8 @@
         </legend>
         
         <div class="flex items-start gap-4">
-          <div class="text-4xl grayscale group-hover:grayscale-0 transition-all duration-300">
-            {experience.icon}
+          <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center">
+            <img src={experience.icon} alt="" class="w-8 h-8 select-none pointer-events-none" style="image-rendering: pixelated;" />
           </div>
           <div class="flex-1 flex flex-col gap-2">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-300 pb-2 gap-1 sm:gap-0">

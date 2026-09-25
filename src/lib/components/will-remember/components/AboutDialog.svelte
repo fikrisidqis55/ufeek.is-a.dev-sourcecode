@@ -21,7 +21,7 @@
     <!-- Title Bar -->
     <div class="win98-window-title flex justify-between items-center py-[2px] px-1">
       <div class="flex items-center gap-1.5 text-xs font-bold">
-        <span>📝</span>
+        <img src="/icons/win98/notepad.png" alt="" class="w-3.5 h-3.5 pointer-events-none select-none" style="image-rendering: pixelated;" />
         <span>About will-remember</span>
       </div>
       <button 
@@ -36,8 +36,8 @@
     <!-- Body -->
     <div class="p-4 flex flex-col gap-3">
       <div class="flex items-start gap-4">
-        <div class="text-4xl p-2 win98-border-inset bg-white flex-shrink-0">
-          📝
+        <div class="w-14 h-14 p-1 win98-border-inset bg-white flex items-center justify-center flex-shrink-0">
+          <img src="/icons/win98/notepad.png" alt="" class="w-10 h-10 pointer-events-none select-none" style="image-rendering: pixelated;" />
         </div>
         <div class="flex flex-col text-xs leading-relaxed text-black">
           <span class="font-bold text-sm">will-remember for ufeek OS</span>

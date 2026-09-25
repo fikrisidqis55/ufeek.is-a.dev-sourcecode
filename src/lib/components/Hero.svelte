@@ -8,7 +8,7 @@
     // Since osState is available globally, we can use it.
     import("$lib/stores/osState.svelte").then(({ osState }) => {
         let title = id.charAt(0).toUpperCase() + id.slice(1);
-        let icon = id === 'projects' ? '📂' : id === 'contact' ? '✉️' : '📝';
+        let icon = id === 'projects' ? '/icons/win98/projects.png' : id === 'contact' ? '/icons/win98/contact.png' : '/icons/win98/about.png';
         osState.openWindow({ id, title, icon, x: 200, y: 150 });
     });
   }
@@ -16,8 +16,8 @@
 
 <div class="h-full w-full flex flex-col justify-center items-center text-black bg-white p-4">
   <div class="flex flex-col md:flex-row items-center gap-6 mb-8">
-    <div class="w-32 h-32 border-[3px] win98-border-inset bg-gray-200 flex items-center justify-center text-6xl">
-        👨‍💻
+    <div class="w-32 h-32 border-[3px] win98-border-inset bg-gray-200 flex items-center justify-center overflow-hidden">
+        <img src="/profile/profile-picture.jpeg" alt="Ufeek" class="w-full h-full object-cover" />
     </div>
     <div class="flex flex-col items-center md:items-start">
         <h1 class="text-4xl md:text-5xl font-bold mb-2">UFEEK</h1>

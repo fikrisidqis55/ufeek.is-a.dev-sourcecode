@@ -51,8 +51,17 @@
   }}
   ondblclick={handleDblClick}
 >
-  <div class="text-4xl {isSelected ? 'bg-win98-title-active opacity-50' : ''}">
-    {icon}
+  <div class="w-10 h-10 flex items-center justify-center {isSelected ? 'bg-win98-title-active/40' : ''}">
+    {#if icon.startsWith('/') || icon.endsWith('.png')}
+      <img 
+        src={icon} 
+        alt={title} 
+        class="w-8 h-8 pointer-events-none select-none" 
+        style="image-rendering: pixelated;" 
+      />
+    {:else}
+      <span class="text-3xl">{icon}</span>
+    {/if}
   </div>
   <div class="text-white text-xs text-center px-1 {isSelected ? 'bg-win98-title-active' : ''}" style="text-shadow: 1px 1px 0px #000;">
     {title}

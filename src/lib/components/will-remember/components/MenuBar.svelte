@@ -218,31 +218,31 @@
   <!-- Quick Action Toolbar -->
   <div class="flex items-center gap-1 px-1 py-1 bg-win98-surface border-t border-win98-border-light text-xs overflow-x-auto scrollbar-hide">
     <button 
-      class="win98-button flex items-center gap-1 py-0.5 px-2 text-[11px]"
+      class="win98-button flex items-center gap-1.5 py-0.5 px-2 text-[11px]"
       onclick={() => willRememberStore.createNewTab()}
       title="Create new note (Ctrl+N)"
     >
-      <span>📄</span>
+      <img src="/icons/win98/document.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
       <span>New</span>
     </button>
 
     <button 
-      class="win98-button flex items-center gap-1 py-0.5 px-2 text-[11px]"
+      class="win98-button flex items-center gap-1.5 py-0.5 px-2 text-[11px]"
       onclick={() => willRememberStore.saveActiveNote()}
       title="Save to Floppy Disk (Ctrl+S)"
     >
-      <span>💾</span>
+      <img src="/icons/win98/floppy.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
       <span>Save</span>
     </button>
 
     <div class="w-px h-5 bg-win98-border-dark border-r border-white mx-0.5"></div>
 
     <button 
-      class="win98-button flex items-center gap-1 py-0.5 px-2 text-[11px] {willRememberStore.isSidebarOpen ? 'win98-border-inset bg-[#dfdfdf]' : ''}"
+      class="win98-button flex items-center gap-1.5 py-0.5 px-2 text-[11px] {willRememberStore.isSidebarOpen ? 'win98-border-inset bg-[#dfdfdf]' : ''}"
       onclick={() => willRememberStore.toggleSidebar()}
       title="Toggle Explorer Sidebar"
     >
-      <span>📁</span>
+      <img src="/icons/win98/folder_closed.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
       <span class="hidden sm:inline">Explorer</span>
     </button>
 

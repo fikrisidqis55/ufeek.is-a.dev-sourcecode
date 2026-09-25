@@ -35,10 +35,15 @@
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div 
-    class="win98-border-inset px-2 h-full flex items-center justify-center gap-1 bg-win98-surface flex-shrink-0 cursor-pointer hover:bg-[#e0e0e0]"
+    class="win98-border-inset px-2 h-full flex items-center justify-center gap-1.5 bg-win98-surface flex-shrink-0 cursor-pointer hover:bg-[#e0e0e0]"
     onclick={() => willRememberStore.toggleMute()}
     title="Click to toggle Web Audio sound effects"
   >
-    <span class="text-xs">{willRememberStore.isMuted ? '🔇 Muted' : '💾 Floppy: OK'}</span>
+    {#if willRememberStore.isMuted}
+      <span class="text-xs">Muted</span>
+    {:else}
+      <img src="/icons/win98/floppy.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
+      <span class="text-xs">Floppy: OK</span>
+    {/if}
   </div>
 </div>

@@ -21,7 +21,7 @@
       osState.openWindow({ 
         id: 'welcome', 
         title: 'Welcome to ufeek OS', 
-        icon: '💻', 
+        icon: '/icons/win98/computer.png', 
         center: true, 
         width: 520 
       });
@@ -29,14 +29,14 @@
   });
 
   const desktopIcons = [
-    { id: 'welcome', title: 'My Computer', icon: '💻', x: 20, y: 20 },
-    { id: 'about', title: 'About Me', icon: '👤', x: 20, y: 120 },
-    { id: 'experience', title: 'Experience', icon: '📈', x: 20, y: 220 },
-    { id: 'techstack', title: 'Tech Stack', icon: '⚙️', x: 20, y: 320 },
-    { id: 'projects', title: 'Projects', icon: '📂', x: 20, y: 420 },
-    { id: 'contact', title: 'Contact', icon: '✉️', x: 20, y: 520 },
-    { id: 'doom', title: 'DOOM.EXE', icon: '💀', x: 20, y: 620 },
-    { id: 'will-remember', title: 'will-remember', icon: '📝', x: 120, y: 20 },
+    { id: 'welcome', title: 'My Computer', icon: '/icons/win98/computer.png', x: 20, y: 20 },
+    { id: 'about', title: 'About Me', icon: '/icons/win98/about.png', x: 20, y: 120 },
+    { id: 'experience', title: 'Experience', icon: '/icons/win98/experience.png', x: 20, y: 220 },
+    { id: 'techstack', title: 'Tech Stack', icon: '/icons/win98/techstack.png', x: 20, y: 320 },
+    { id: 'projects', title: 'Projects', icon: '/icons/win98/projects.png', x: 20, y: 420 },
+    { id: 'contact', title: 'Contact', icon: '/icons/win98/contact.png', x: 20, y: 520 },
+    { id: 'doom', title: 'DOOM.EXE', icon: '/icons/win98/doom.png', x: 20, y: 620 },
+    { id: 'will-remember', title: 'will-remember', icon: '/icons/win98/notepad.png', x: 120, y: 20 },
   ];
 </script>
 

@@ -41,7 +41,7 @@
 
 <div class="h-full w-full bg-win98-surface p-4 flex flex-col text-black font-[Tahoma,sans-serif]">
   <div class="flex items-center gap-3 mb-6">
-    <div class="text-4xl">✉️</div>
+    <img src="/icons/win98/contact.png" alt="Internet Mail" class="w-10 h-10 select-none pointer-events-none" style="image-rendering: pixelated;" />
     <div>
       <h2 class="text-xl font-bold">Internet Mail</h2>
       <p class="text-sm">Compose New Message</p>
