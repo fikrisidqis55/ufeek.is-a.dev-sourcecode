@@ -301,6 +301,33 @@ export function createWillRememberRepository(): INoteRepository & {
     }
   }
 
+  function moveNoteToFolder(noteId: string, targetFolderId: string | null) {
+    const note = notes.find((n) => n.id === noteId);
+    if (!note) return;
+    if (note.folderId === targetFolderId) return;
+
+    note.folderId = targetFolderId;
+    note.updatedAt = new Date().toISOString();
+
+    if (targetFolderId) {
+      const targetFolder = folders.find((f) => f.id === targetFolderId);
+      if (targetFolder) {
+        targetFolder.isExpanded = true;
+      }
+    }
+
+    playClickSound();
+    persistToStorage();
+
+    const folderName = targetFolderId
+      ? folders.find((f) => f.id === targetFolderId)?.name || 'Folder'
+      : 'Root';
+    statusMessage = `Moved '${note.title}' to ${folderName} 📁`;
+    setTimeout(() => {
+      if (statusMessage.startsWith('Moved ')) statusMessage = 'Ready';
+    }, 2500);
+  }
+
   // --- SETTINGS ---
   function setEditorMode(mode: EditorMode) {
     playClickSound();
@@ -415,6 +442,7 @@ export function createWillRememberRepository(): INoteRepository & {
     createFolder,
     toggleFolder,
     deleteFolder,
+    moveNoteToFolder,
     setEditorMode,
     toggleMute,
     toggleWordWrap,
