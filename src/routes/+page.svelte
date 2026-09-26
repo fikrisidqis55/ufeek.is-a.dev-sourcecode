@@ -12,6 +12,7 @@
   
   import DesktopIcon from "$lib/components/os/DesktopIcon.svelte";
   import Window from "$lib/components/os/Window.svelte";
+  import AppRunner from "$lib/components/os/AppRunner.svelte";
   import { onMount } from "svelte";
   import { osState } from "$lib/stores/osState.svelte";
 
@@ -37,6 +38,7 @@
     { id: 'contact', title: 'Contact', icon: '/icons/win98/contact.png', x: 20, y: 520 },
     { id: 'doom', title: 'DOOM.EXE', icon: '/icons/win98/doom.png', x: 20, y: 620 },
     { id: 'will-remember', title: 'will-remember', icon: '/icons/win98/notepad.png', x: 120, y: 20 },
+    { id: 'app-cirrust-lite', title: 'Cirrust Lite.exe', icon: '/icons/win98/executable.png', x: 120, y: 120 },
   ];
 </script>
 
@@ -119,4 +121,11 @@
       <WillRemember />
     </div>
   </Window>
+
+  <!-- Dynamic Project Executable Runner Windows -->
+  {#each osState.windows.filter(w => w.id.startsWith('app-')) as appWin (appWin.id)}
+    <Window windowId={appWin.id}>
+      <AppRunner projectId={appWin.id.replace('app-', '')} />
+    </Window>
+  {/each}
 </div>

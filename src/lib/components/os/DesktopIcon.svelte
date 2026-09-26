@@ -21,6 +21,10 @@
     } else if (windowId === 'experience') {
       width = 660;
       height = 560;
+    } else if (windowId.startsWith('app-')) {
+      width = 960;
+      height = 680;
+      center = true;
     }
     osState.openWindow({ 
       id: windowId, 

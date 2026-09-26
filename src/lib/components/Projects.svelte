@@ -1,152 +1,191 @@
 <script lang="ts">
-  interface Project {
-    title: string;
-    description: string;
-    image: string;
-    details: string;
-    technologies?: string[];
+  import { projectsList, type ProjectExecutable } from "$lib/data/projects";
+  import { osState } from "$lib/stores/osState.svelte";
+  import { Play, FileText, ArrowLeft, CheckCircle2, Sparkles } from "lucide-svelte";
+
+  let selectedProject = $state<ProjectExecutable | null>(null);
+
+  function launchProject(project: ProjectExecutable) {
+    osState.openWindow({
+      id: `app-${project.id}`,
+      title: `${project.exeName} - ${project.title}`,
+      icon: project.icon,
+      width: 960,
+      height: 680,
+      center: true
+    });
   }
 
-  const projects: Project[] = [
-    {
-      title: "Cirrust Lite",
-      description: "Registration portal for Cirrust Lite, the free version of the Cirrust application.",
-      image: "/projects/cirrust-lite-form.png",
-      details: "/projects/cirrust-lite-form.png",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React Query"],
-    },
-    {
-      title: "Mirecruit CMS",
-      description: "Recruitment platform for Manulife agents.",
-      image: "/projects/mirecruit-cms-login.png",
-      details: "/projects/mirecruit-cms-dashboard.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "ANT Design"],
-    },
-    {
-      title: "Smartcourier",
-      description: "Logistics management system for efficient courier tracking.",
-      image: "/projects/smartcourier-ccc-login.png",
-      details: "/projects/smartcourier-ccc-dashboard.png",
-      technologies: ["React.js", "React Query", "ANT Design", "React Redux"],
-    },
-    {
-      title: "Cirrust DMS",
-      description: "Cloud-based document management system.",
-      image: "/projects/cirrust-dms-login.png",
-      details: "/projects/cirrust-dms-dashboard-admin.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-    },
-    {
-      title: "Cirrust Workflow",
-      description: "Automated approval workflow system.",
-      image: "/projects/cirrust-workflow-login.png",
-      details: "/projects/cirrust-workflow-dashboard-admin.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-    },
-    {
-      title: "Kansai Custom",
-      description: "Custom web solution for Kansai using Cirrust Engine",
-      image: "/projects/kansai-custompage-form.png",
-      details: "/projects/kansai-custompage-form.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-    },
-    {
-      title: "E-Kantah BPN",
-      description: "E-Registration for Self-Service Land Office.",
-      image: "/projects/bpn-landing-page.png",
-      details: "/projects/bpn-landing-page.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-    },
-    {
-      title: "Impulse Web",
-      description: "Business analytics dashboard with real-time insights.",
-      image: "/projects/impulse-login.png",
-      details: "/projects/impulse-dashboard.png",
-      technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-    },
-    {
-      title: "Zurich CMS",
-      description: "Admin dashboard for Zurich agents application management.",
-      image: "/projects/zurich-cms-dashboard.png",
-      details: "/projects/zurich-cms-dashboard.png",
-      technologies: ["React", "TypeScript", "React Query", ".Net Core", "SQL Server"],
-    },
-  ];
+  let lastClickTime = 0;
+  let clickedId: string | null = null;
 
-  let selectedProject: Project | null = null;
+  function handleIconClick(project: ProjectExecutable) {
+    const now = Date.now();
+    if (osState.isMobile) {
+      // On mobile, single tap opens details, with option to run
+      selectedProject = project;
+      return;
+    }
+
+    // On desktop: double-click launches .exe directly, single click selects for preview
+    if (clickedId === project.id && now - lastClickTime < 350) {
+      launchProject(project);
+    } else {
+      selectedProject = project;
+    }
+    lastClickTime = now;
+    clickedId = project.id;
+  }
 </script>
 
 <div class="h-full w-full bg-white flex flex-col text-black font-[Tahoma,sans-serif]">
   {#if !selectedProject}
-    <!-- Toolbar -->
-    <div class="flex items-center gap-4 p-1 bg-win98-surface win98-border-outset mb-1">
-      <div class="text-sm px-2">C:\Projects\></div>
-      <div class="text-xs text-gray-600 italic">Select an executable to view details</div>
+    <!-- Explorer Address & Information Toolbar -->
+    <div class="flex items-center justify-between p-1 bg-win98-surface win98-border-outset mb-1 text-xs">
+      <div class="flex items-center gap-2 px-2">
+        <span class="font-bold">Address:</span>
+        <span class="font-mono bg-white px-2 py-0.5 win98-border-inset">C:\Projects\</span>
+      </div>
+      <div class="text-[11px] text-gray-600 italic px-2 hidden sm:block">
+        {osState.isMobile ? "Tap an executable to view details" : "Double-click executable to execute"}
+      </div>
     </div>
 
     <!-- Explorer Grid -->
-    <div class="flex-1 overflow-y-auto win98-border-inset bg-white p-3 sm:p-4">
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap gap-3 sm:gap-8 justify-items-center">
-        {#each projects as project}
+    <div class="flex-1 overflow-y-auto win98-border-inset bg-white p-3 sm:p-5">
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap gap-4 sm:gap-8 justify-items-center">
+        {#each projectsList as project}
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div 
-            class="flex flex-col items-center gap-1 w-20 sm:w-24 cursor-pointer group active:scale-95 transition-transform"
-            on:click={() => (selectedProject = project)}
+            class="flex flex-col items-center gap-1.5 w-20 sm:w-28 cursor-pointer group active:scale-95 transition-transform relative p-1 rounded hover:bg-blue-50/50"
+            onclick={() => handleIconClick(project)}
           >
+            {#if project.hasMock}
+              <div class="absolute -top-1 -right-1 bg-amber-400 text-black text-[9px] font-bold px-1 rounded-sm shadow-sm flex items-center gap-0.5 border border-amber-600">
+                <Sparkles size={8} />
+                <span>MOCK</span>
+              </div>
+            {/if}
+
             <div class="w-12 h-12 flex items-center justify-center group-active:brightness-75">
-              <img src="/icons/win98/executable.png" alt="" class="w-8 h-8 select-none pointer-events-none" style="image-rendering: pixelated;" />
+              <img 
+                src="/icons/win98/executable.png" 
+                alt="" 
+                class="w-9 h-9 select-none pointer-events-none" 
+                style="image-rendering: pixelated;" 
+              />
             </div>
-            <span class="text-xs text-center px-0.5 leading-tight group-hover:underline group-active:bg-win98-title-active group-active:text-white">
-              {project.title}.exe
+            <span class="text-xs text-center px-1 leading-tight group-hover:underline group-active:bg-win98-title-active group-active:text-white line-clamp-2">
+              {project.exeName}
             </span>
           </div>
         {/each}
       </div>
     </div>
   {:else}
-    <!-- Project Details View -->
-    <div class="flex-1 flex flex-col bg-win98-surface p-2">
-      <!-- Top Menu Bar -->
-      <div class="flex gap-2 mb-2">
-        <button class="win98-button flex items-center gap-1 font-bold" on:click={() => selectedProject = null}>
-          ⬅ Back
+    <!-- Project Details & Launcher View -->
+    <div class="flex-1 flex flex-col bg-win98-surface p-2 overflow-hidden">
+      <!-- Top Navigation & Action Bar -->
+      <div class="flex items-center justify-between mb-2 gap-2 flex-wrap">
+        <button 
+          class="win98-button flex items-center gap-1.5 font-bold px-3 py-1 text-xs" 
+          onclick={() => (selectedProject = null)}
+          type="button"
+        >
+          <ArrowLeft size={13} />
+          <span>Back to C:\Projects</span>
+        </button>
+
+        <!-- Prominent Launch / Run Executable Button -->
+        <button
+          type="button"
+          onclick={() => selectedProject && launchProject(selectedProject)}
+          class="win98-button bg-green-100 hover:bg-green-200 border-2 font-bold px-4 py-1 text-xs flex items-center gap-2 cursor-pointer shadow-sm"
+        >
+          <Play size={13} class="text-green-700 fill-green-700" />
+          <span>Launch {selectedProject.exeName}</span>
+          {#if selectedProject.hasMock}
+            <span class="bg-amber-400 text-black text-[10px] px-1 py-0.2 rounded font-mono font-bold">Interactive</span>
+          {/if}
         </button>
       </div>
 
-      <!-- Main Content -->
+      <!-- Main Content Details Pane -->
       <div class="flex-1 win98-border-inset bg-white p-4 overflow-y-auto flex flex-col gap-4">
         <div class="flex gap-4 items-start border-b border-gray-300 pb-4">
-          <img src="/icons/win98/executable.png" alt="" class="w-12 h-12 select-none pointer-events-none flex-shrink-0" style="image-rendering: pixelated;" />
-          <div>
-            <h2 class="text-2xl font-bold">{selectedProject.title}</h2>
-            <p class="text-sm text-gray-600 mt-1">{selectedProject.description}</p>
+          <img 
+            src="/icons/win98/executable.png" 
+            alt="" 
+            class="w-12 h-12 select-none pointer-events-none flex-shrink-0" 
+            style="image-rendering: pixelated;" 
+          />
+          <div class="flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-xl sm:text-2xl font-bold">{selectedProject.title}</h2>
+              <span class="text-xs bg-gray-200 px-2 py-0.5 win98-border-outset font-mono font-semibold">
+                {selectedProject.exeName}
+              </span>
+              {#if selectedProject.hasMock}
+                <span class="bg-teal-600 text-white text-[11px] px-2 py-0.5 rounded font-semibold flex items-center gap-1">
+                  <CheckCircle2 size={12} />
+                  <span>Interactive Sandbox Ready</span>
+                </span>
+              {/if}
+            </div>
+            <p class="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">{selectedProject.description}</p>
+            <p class="text-xs text-gray-500 mt-0.5 font-mono">
+              Client: <strong>{selectedProject.client}</strong> • Role: <strong>{selectedProject.role}</strong> ({selectedProject.year})
+            </p>
           </div>
         </div>
 
-        <div class="win98-border-inset p-1 bg-gray-200">
-          <!-- We can use the image as a screenshot preview -->
+        <!-- Screenshot Preview -->
+        <div class="win98-border-inset p-1.5 bg-gray-100 flex flex-col items-center">
+          <div class="w-full flex justify-between items-center text-[11px] text-gray-500 mb-1 px-1">
+            <span>Verified Screen Capture</span>
+            <button 
+              type="button" 
+              onclick={() => selectedProject && launchProject(selectedProject)}
+              class="text-blue-700 hover:underline font-semibold cursor-pointer"
+            >
+              [▶ Execute in AppRunner Window]
+            </button>
+          </div>
           <img 
             src={selectedProject.details || selectedProject.image} 
             alt={selectedProject.title} 
-            class="w-full h-auto object-contain win98-border-inset bg-white"
-            on:error={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+            class="w-full h-auto max-h-[360px] object-contain win98-border-inset bg-white"
+            onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
           />
         </div>
 
-        {#if selectedProject.technologies}
-          <fieldset class="border-2 border-gray-400 p-2 mt-2">
-            <legend class="px-2 text-sm font-bold bg-white text-gray-800 ml-2">Dependencies (.dll)</legend>
-            <div class="flex flex-wrap gap-2 pt-2">
+        <!-- Specifications and Highlights -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <fieldset class="border-2 border-gray-400 p-3">
+            <legend class="px-2 text-xs font-bold bg-white text-gray-800 ml-2">Architecture Highlights</legend>
+            <ul class="text-xs space-y-1.5 pt-1 text-gray-700">
+              {#each selectedProject.specs.highlights as item}
+                <li class="flex items-start gap-1.5">
+                  <span class="text-win98-title-active font-bold">▪</span>
+                  <span>{item}</span>
+                </li>
+              {/each}
+            </ul>
+          </fieldset>
+
+          <fieldset class="border-2 border-gray-400 p-3">
+            <legend class="px-2 text-xs font-bold bg-white text-gray-800 ml-2">Dependencies (.dll)</legend>
+            <div class="flex flex-wrap gap-1.5 pt-1">
               {#each selectedProject.technologies as tech}
-                <div class="flex items-center gap-1.5 bg-gray-200 win98-border-outset px-2 py-1 text-xs">
+                <div class="flex items-center gap-1 bg-gray-200 win98-border-outset px-2 py-1 text-[11px]">
                   <img src="/icons/win98/techstack.png" alt="" class="w-3.5 h-3.5 select-none pointer-events-none" style="image-rendering: pixelated;" />
                   <span>{tech}</span>
                 </div>
               {/each}
             </div>
           </fieldset>
-        {/if}
+        </div>
       </div>
     </div>
   {/if}
