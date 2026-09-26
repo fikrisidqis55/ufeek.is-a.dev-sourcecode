@@ -18,6 +18,9 @@
     } else if (windowId === 'welcome') {
       width = 520;
       center = true;
+    } else if (windowId === 'experience') {
+      width = 660;
+      height = 560;
     }
     osState.openWindow({ 
       id: windowId, 

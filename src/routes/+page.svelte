@@ -77,7 +77,7 @@
   </Window>
 
   <Window windowId="experience">
-    <div class="p-4" style="background: var(--background);">
+    <div class="h-full w-full flex flex-col min-h-0 bg-win98-surface">
         <Experience />
     </div>
   </Window>
