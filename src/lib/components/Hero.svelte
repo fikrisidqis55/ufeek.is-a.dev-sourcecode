@@ -1,7 +1,11 @@
 <script lang="ts">
   import { FileText } from "@lucide/svelte";
 
-  const resumeUrl = import.meta.env.PUBLIC_RESUME_URL || "";
+  const resumeUrl =
+    import.meta.env.PUBLIC_RESUME_URL ||
+    import.meta.env.NEXT_PUBLIC_RESUME_URL ||
+    import.meta.env.VITE_RESUME_URL ||
+    "";
 
   function openSection(id: string) {
     import("$lib/stores/osState.svelte").then(({ osState }) => {
