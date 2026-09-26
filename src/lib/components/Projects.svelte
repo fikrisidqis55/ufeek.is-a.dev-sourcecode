@@ -6,20 +6,26 @@
   let selectedProject = $state<ProjectExecutable | null>(null);
 
   function launchProject(project: ProjectExecutable) {
+    const appId = `app-${project.id}`;
     osState.openWindow({
-      id: `app-${project.id}`,
+      id: appId,
       title: `${project.exeName} - ${project.title}`,
       icon: project.icon,
       width: 960,
       height: 680,
       center: true
     });
+    osState.focusWindow(appId);
+    setTimeout(() => {
+      osState.focusWindow(appId);
+    }, 20);
   }
 
   let lastClickTime = 0;
   let clickedId: string | null = null;
 
-  function handleIconClick(project: ProjectExecutable) {
+  function handleIconClick(project: ProjectExecutable, e?: MouseEvent) {
+    if (e) e.stopPropagation();
     const now = Date.now();
     if (osState.isMobile) {
       // On mobile, single tap opens details, with option to run
@@ -100,7 +106,11 @@
         <!-- Prominent Launch / Run Executable Button -->
         <button
           type="button"
-          onclick={() => selectedProject && launchProject(selectedProject)}
+          onmousedown={(e) => e.stopPropagation()}
+          onclick={(e) => {
+            e.stopPropagation();
+            if (selectedProject) launchProject(selectedProject);
+          }}
           class="win98-button bg-green-100 hover:bg-green-200 border-2 font-bold px-4 py-1 text-xs flex items-center gap-2 cursor-pointer shadow-sm"
         >
           <Play size={13} class="text-green-700 fill-green-700" />
@@ -146,7 +156,11 @@
             <span>Verified Screen Capture</span>
             <button 
               type="button" 
-              onclick={() => selectedProject && launchProject(selectedProject)}
+              onmousedown={(e) => e.stopPropagation()}
+              onclick={(e) => {
+                e.stopPropagation();
+                if (selectedProject) launchProject(selectedProject);
+              }}
               class="text-blue-700 hover:underline font-semibold cursor-pointer"
             >
               [▶ Execute in AppRunner Window]

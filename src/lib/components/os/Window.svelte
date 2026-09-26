@@ -122,7 +122,6 @@
         : `top: ${position.y}px; left: ${position.x}px; min-width: ${winConfig?.width ? winConfig.width + 'px' : '300px'}; ${winConfig?.width ? `width: ${winConfig.width}px;` : ''} ${winConfig?.height ? `height: ${winConfig.height}px;` : ''} max-width: 90vw; max-height: 85vh;`}
     "
     onmousedown={() => osState.focusWindow(windowId)}
-    onclick={() => osState.focusWindow(windowId)}
   >
     <!-- Title Bar -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
