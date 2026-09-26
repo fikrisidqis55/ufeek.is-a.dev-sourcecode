@@ -56,7 +56,7 @@
       <img 
         src={icon} 
         alt={title} 
-        class="w-8 h-8 pointer-events-none select-none" 
+        class="w-8 h-8 pointer-events-none select-none object-contain" 
         style="image-rendering: pixelated;" 
       />
     {:else}

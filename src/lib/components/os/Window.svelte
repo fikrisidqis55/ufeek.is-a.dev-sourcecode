@@ -130,7 +130,7 @@
       <div class="flex items-center gap-2 px-1">
         {#if winConfig?.icon}
           {#if winConfig.icon.startsWith('/') || winConfig.icon.endsWith('.png')}
-            <img src={winConfig.icon} alt="" class="w-4 h-4 pointer-events-none select-none flex-shrink-0" style="image-rendering: pixelated;" />
+            <img src={winConfig.icon} alt="" class="w-4 h-4 pointer-events-none select-none flex-shrink-0 object-contain" style="image-rendering: pixelated;" />
           {:else}
             <span class="text-sm">{winConfig.icon}</span>
           {/if}

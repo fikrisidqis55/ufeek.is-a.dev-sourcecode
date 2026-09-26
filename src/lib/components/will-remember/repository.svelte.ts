@@ -224,16 +224,23 @@ export function createWillRememberRepository(): INoteRepository & {
   }
 
   function updateNoteTitle(noteId: string, newTitle: string) {
+    const trimmed = newTitle.trim();
+    if (!trimmed) return;
     const note = notes.find((n) => n.id === noteId);
     if (!note) return;
-    note.title = newTitle;
+    note.title = trimmed;
     note.updatedAt = new Date().toISOString();
 
     const tab = openTabs.find((t) => t.noteId === noteId);
     if (tab) {
-      tab.title = newTitle;
+      tab.title = trimmed;
     }
     persistToStorage();
+    playClickSound();
+    statusMessage = `Renamed note to '${trimmed}'`;
+    setTimeout(() => {
+      if (statusMessage.startsWith('Renamed note')) statusMessage = 'Ready';
+    }, 2500);
   }
 
   function saveActiveNote() {
@@ -276,6 +283,20 @@ export function createWillRememberRepository(): INoteRepository & {
     folders.push(newFolder);
     persistToStorage();
     return newFolder;
+  }
+
+  function renameFolder(folderId: string, newName: string) {
+    const trimmed = newName.trim();
+    if (!trimmed) return;
+    const folder = folders.find((f) => f.id === folderId);
+    if (!folder) return;
+    folder.name = trimmed;
+    persistToStorage();
+    playClickSound();
+    statusMessage = `Renamed folder to '${trimmed}'`;
+    setTimeout(() => {
+      if (statusMessage.startsWith('Renamed folder')) statusMessage = 'Ready';
+    }, 2500);
   }
 
   function toggleFolder(folderId: string) {
@@ -440,6 +461,7 @@ export function createWillRememberRepository(): INoteRepository & {
     saveActiveNote,
     deleteNote,
     createFolder,
+    renameFolder,
     toggleFolder,
     deleteFolder,
     moveNoteToFolder,

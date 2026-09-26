@@ -77,6 +77,14 @@
             <span>Save to Floppy</span>
             <span class="text-gray-500">Ctrl+S</span>
           </button>
+          <button class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white flex justify-between" onclick={() => handleAction(() => {
+            const name = prompt('New folder name:');
+            if (name && name.trim()) {
+              willRememberStore.createFolder(name.trim());
+            }
+          })}>
+            <span>New Folder...</span>
+          </button>
           
           <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
 
@@ -128,7 +136,18 @@
           <button class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white" onclick={() => handleAction(() => willRememberStore.setEditorMode('blocks'))}>
             Mode: Notion Blocks {willRememberStore.editorMode === 'blocks' ? '✓' : ''}
           </button>
-          
+          <button class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white flex justify-between" onclick={() => handleAction(() => {
+            if (willRememberStore.activeNote) {
+              const newTitle = prompt('Rename note to:', willRememberStore.activeNote.title);
+              if (newTitle && newTitle.trim()) {
+                willRememberStore.updateNoteTitle(willRememberStore.activeNote.id, newTitle.trim());
+              }
+            }
+          })}>
+            <span>Rename Note...</span>
+            <span class="text-gray-500">F2</span>
+          </button>
+
           <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
 
           <button class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white" onclick={() => handleAction(() => {

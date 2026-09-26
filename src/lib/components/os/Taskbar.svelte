@@ -35,7 +35,7 @@
           >
             {#if win.icon}
               {#if win.icon.startsWith('/') || win.icon.endsWith('.png')}
-                <img src={win.icon} alt="" class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" style="image-rendering: pixelated;" />
+                <img src={win.icon} alt="" class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0 object-contain" style="image-rendering: pixelated;" />
               {:else}
                 <span class="text-xs">{win.icon}</span>
               {/if}

@@ -118,7 +118,75 @@
     draggedNoteId = null;
     dragOverTargetId = null;
   }
+
+  // --- Inline Rename & Context Menu States ---
+  let editingTarget = $state<{ type: 'folder' | 'note'; id: string } | null>(null);
+  let editingName = $state('');
+  let contextMenu = $state<{
+    type: 'folder' | 'note';
+    id: string;
+    name: string;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  function startRename(type: 'folder' | 'note', id: string, currentName: string) {
+    playClickSound();
+    editingTarget = { type, id };
+    editingName = currentName;
+    closeContextMenu();
+  }
+
+  function commitRename() {
+    if (!editingTarget) return;
+    const trimmed = editingName.trim();
+    if (trimmed) {
+      if (editingTarget.type === 'folder') {
+        willRememberStore.renameFolder(editingTarget.id, trimmed);
+      } else {
+        willRememberStore.updateNoteTitle(editingTarget.id, trimmed);
+      }
+    }
+    editingTarget = null;
+    editingName = '';
+  }
+
+  function cancelRename() {
+    editingTarget = null;
+    editingName = '';
+  }
+
+  function openContextMenu(e: MouseEvent, type: 'folder' | 'note', id: string, name: string) {
+    e.preventDefault();
+    e.stopPropagation();
+    playClickSound();
+    contextMenu = {
+      type,
+      id,
+      name,
+      x: e.clientX,
+      y: e.clientY
+    };
+  }
+
+  function closeContextMenu() {
+    contextMenu = null;
+  }
+
+  function handleWindowKeydown(e: KeyboardEvent) {
+    if (e.key === 'F2') {
+      if (!editingTarget && willRememberStore.activeNote) {
+        e.preventDefault();
+        startRename('note', willRememberStore.activeNote.id, willRememberStore.activeNote.title);
+      }
+    } else if (e.key === 'Escape') {
+      if (contextMenu) closeContextMenu();
+      if (editingTarget) cancelRename();
+    }
+  }
 </script>
+
+<svelte:window onclick={closeContextMenu} onkeydown={handleWindowKeydown} />
 
 <div class="w-56 h-full flex flex-col bg-win98-surface win98-border-inset flex-shrink-0 select-none text-xs">
   <!-- Sidebar Header / Actions -->
@@ -206,17 +274,21 @@
       {#each filteredNotes as note (note.id)}
         {@const isSelected = willRememberStore.activeNote?.id === note.id}
         {@const isBeingDragged = draggedNoteId === note.id}
+        {@const isEditing = editingTarget?.type === 'note' && editingTarget?.id === note.id}
         <!-- svelte-ignore a11y_click_events_have_key_events -->
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div
-          class="flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs transition-opacity {isBeingDragged ? 'opacity-30 border border-dashed border-gray-600' : ''} {isSelected
+          class="group flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs transition-opacity {isBeingDragged ? 'opacity-30 border border-dashed border-gray-600' : ''} {isSelected
             ? 'bg-win98-title-active text-white font-bold'
             : 'hover:bg-blue-100 text-black'}"
-          draggable="true"
+          draggable={!isEditing}
           ondragstart={(e) => handleNoteDragStart(e, note.id)}
           ondragend={handleDragEnd}
-          onclick={() => handleSelectNote(note.id)}
-          title="Drag to move to folder"
+          onclick={() => {
+            if (!isEditing) handleSelectNote(note.id);
+          }}
+          oncontextmenu={(e) => openContextMenu(e, 'note', note.id, note.title)}
+          title="Drag to move to folder, right click to rename"
         >
           <img 
             src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
@@ -224,7 +296,34 @@
             class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
             style="image-rendering: pixelated;" 
           />
-          <span class="truncate">{note.title}</span>
+          {#if isEditing}
+            <!-- svelte-ignore a11y_autofocus -->
+            <input
+              type="text"
+              bind:value={editingName}
+              class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+              autofocus
+              onclick={(e) => e.stopPropagation()}
+              onkeydown={(e) => {
+                e.stopPropagation();
+                if (e.key === 'Enter') commitRename();
+                if (e.key === 'Escape') cancelRename();
+              }}
+              onblur={commitRename}
+            />
+          {:else}
+            <span class="truncate flex-1">{note.title}</span>
+            <button
+              class="opacity-0 group-hover:opacity-100 hover:bg-gray-200 px-1 text-[10px] {isSelected ? 'text-black bg-white' : 'text-gray-700'} ml-1 rounded-none win98-button py-0"
+              onclick={(e) => {
+                e.stopPropagation();
+                startRename('note', note.id, note.title);
+              }}
+              title="Rename note (F2)"
+            >
+              ✎
+            </button>
+          {/if}
         </div>
       {/each}
       {#if filteredNotes.length === 0}
@@ -235,20 +334,24 @@
       {#each willRememberStore.folders as folder (folder.id)}
         {@const folderNotes = willRememberStore.notes.filter((n) => !n.isDeleted && n.folderId === folder.id)}
         {@const isDragOver = dragOverTargetId === folder.id}
+        {@const isEditingFolder = editingTarget?.type === 'folder' && editingTarget?.id === folder.id}
         <div class="flex flex-col mb-0.5">
           <!-- Folder Node Drop Target -->
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
-            class="flex items-center gap-1.5 px-1 py-0.5 cursor-pointer transition-colors {isDragOver
+            class="group flex items-center gap-1.5 px-1 py-0.5 cursor-pointer transition-colors {isDragOver
               ? 'bg-win98-title-active text-white font-bold border-2 border-dashed border-white'
               : 'hover:bg-gray-100'}"
             ondragover={(e) => handleFolderDragOver(e, folder.id)}
             ondragenter={(e) => handleFolderDragEnter(e, folder.id)}
             ondragleave={(e) => handleFolderDragLeave(e, folder.id)}
             ondrop={(e) => handleFolderDrop(e, folder.id)}
-            onclick={() => willRememberStore.toggleFolder(folder.id)}
-            title="Drop files here to move into this folder"
+            onclick={() => {
+              if (!isEditingFolder) willRememberStore.toggleFolder(folder.id);
+            }}
+            oncontextmenu={(e) => openContextMenu(e, 'folder', folder.id, folder.name)}
+            title="Right click or press F2 to rename"
           >
             <span class="w-3 text-[10px] font-mono text-center font-bold">
               {folder.isExpanded ? '[-]' : '[+]'}
@@ -259,8 +362,37 @@
               class="w-4 h-4 pointer-events-none select-none flex-shrink-0" 
               style="image-rendering: pixelated;" 
             />
-            <span class="font-bold truncate text-[11px]">{folder.name}</span>
-            <span class="text-[10px] {isDragOver ? 'text-white' : 'text-gray-400'} ml-auto">({folderNotes.length})</span>
+
+            {#if isEditingFolder}
+              <!-- svelte-ignore a11y_autofocus -->
+              <input
+                type="text"
+                bind:value={editingName}
+                class="win98-border-inset bg-white text-black px-1 py-0 text-[11px] font-bold outline-none flex-1 min-w-0"
+                autofocus
+                onclick={(e) => e.stopPropagation()}
+                ondblclick={(e) => e.stopPropagation()}
+                onkeydown={(e) => {
+                  e.stopPropagation();
+                  if (e.key === 'Enter') commitRename();
+                  if (e.key === 'Escape') cancelRename();
+                }}
+                onblur={commitRename}
+              />
+            {:else}
+              <span class="font-bold truncate text-[11px] flex-1">{folder.name}</span>
+              <button
+                class="opacity-0 group-hover:opacity-100 hover:bg-gray-200 px-1 text-[10px] text-gray-700 ml-1 rounded-none win98-button py-0"
+                onclick={(e) => {
+                  e.stopPropagation();
+                  startRename('folder', folder.id, folder.name);
+                }}
+                title="Rename folder (F2)"
+              >
+                ✎
+              </button>
+              <span class="text-[10px] {isDragOver ? 'text-white' : 'text-gray-400'} ml-1">({folderNotes.length})</span>
+            {/if}
           </div>
 
           <!-- Notes under Folder -->
@@ -269,17 +401,21 @@
               {#each folderNotes as note (note.id)}
                 {@const isSelected = willRememberStore.activeNote?.id === note.id}
                 {@const isBeingDragged = draggedNoteId === note.id}
+                {@const isEditingNote = editingTarget?.type === 'note' && editingTarget?.id === note.id}
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <!-- svelte-ignore a11y_no_static_element_interactions -->
                 <div
-                  class="flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs {isBeingDragged ? 'opacity-30 border border-dashed border-gray-500 bg-gray-100' : ''} {isSelected
+                  class="group flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs {isBeingDragged ? 'opacity-30 border border-dashed border-gray-500 bg-gray-100' : ''} {isSelected
                     ? 'bg-win98-title-active text-white font-bold'
                     : 'hover:bg-blue-100 text-black'}"
-                  draggable="true"
+                  draggable={!isEditingNote}
                   ondragstart={(e) => handleNoteDragStart(e, note.id)}
                   ondragend={handleDragEnd}
-                  onclick={() => handleSelectNote(note.id)}
-                  title="Drag file to another folder"
+                  onclick={() => {
+                    if (!isEditingNote) handleSelectNote(note.id);
+                  }}
+                  oncontextmenu={(e) => openContextMenu(e, 'note', note.id, note.title)}
+                  title="Drag file to another folder, right click to rename"
                 >
                   <img 
                     src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
@@ -287,7 +423,35 @@
                     class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
                     style="image-rendering: pixelated;" 
                   />
-                  <span class="truncate">{note.title}</span>
+                  {#if isEditingNote}
+                    <!-- svelte-ignore a11y_autofocus -->
+                    <input
+                      type="text"
+                      bind:value={editingName}
+                      class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+                      autofocus
+                      onclick={(e) => e.stopPropagation()}
+                      ondblclick={(e) => e.stopPropagation()}
+                      onkeydown={(e) => {
+                        e.stopPropagation();
+                        if (e.key === 'Enter') commitRename();
+                        if (e.key === 'Escape') cancelRename();
+                      }}
+                      onblur={commitRename}
+                    />
+                  {:else}
+                    <span class="truncate flex-1">{note.title}</span>
+                    <button
+                      class="opacity-0 group-hover:opacity-100 hover:bg-gray-200 px-1 text-[10px] {isSelected ? 'text-black bg-white' : 'text-gray-700'} ml-1 rounded-none win98-button py-0"
+                      onclick={(e) => {
+                        e.stopPropagation();
+                        startRename('note', note.id, note.title);
+                      }}
+                      title="Rename note (F2)"
+                    >
+                      ✎
+                    </button>
+                  {/if}
                 </div>
               {/each}
               {#if folderNotes.length === 0}
@@ -320,17 +484,21 @@
         {#each rootNotes as note (note.id)}
           {@const isSelected = willRememberStore.activeNote?.id === note.id}
           {@const isBeingDragged = draggedNoteId === note.id}
+          {@const isEditingRootNote = editingTarget?.type === 'note' && editingTarget?.id === note.id}
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div
-            class="flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs {isBeingDragged ? 'opacity-30 border border-dashed border-gray-500 bg-gray-100' : ''} {isSelected
+            class="group flex items-center gap-1.5 px-1 py-0.5 cursor-move text-xs {isBeingDragged ? 'opacity-30 border border-dashed border-gray-500 bg-gray-100' : ''} {isSelected
               ? 'bg-win98-title-active text-white font-bold'
               : 'hover:bg-blue-100 text-black'}"
-            draggable="true"
+            draggable={!isEditingRootNote}
             ondragstart={(e) => handleNoteDragStart(e, note.id)}
             ondragend={handleDragEnd}
-            onclick={() => handleSelectNote(note.id)}
-            title="Drag file to folder"
+            onclick={() => {
+              if (!isEditingRootNote) handleSelectNote(note.id);
+            }}
+            oncontextmenu={(e) => openContextMenu(e, 'note', note.id, note.title)}
+            title="Drag file to folder, right click to rename"
           >
             <img 
               src={note.title.endsWith('.md') ? '/icons/win98/notepad.png' : '/icons/win98/document.png'} 
@@ -338,7 +506,35 @@
               class="w-3.5 h-3.5 pointer-events-none select-none flex-shrink-0" 
               style="image-rendering: pixelated;" 
             />
-            <span class="truncate">{note.title}</span>
+            {#if isEditingRootNote}
+              <!-- svelte-ignore a11y_autofocus -->
+              <input
+                type="text"
+                bind:value={editingName}
+                class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+                autofocus
+                onclick={(e) => e.stopPropagation()}
+                ondblclick={(e) => e.stopPropagation()}
+                onkeydown={(e) => {
+                  e.stopPropagation();
+                  if (e.key === 'Enter') commitRename();
+                  if (e.key === 'Escape') cancelRename();
+                }}
+                onblur={commitRename}
+              />
+            {:else}
+              <span class="truncate flex-1">{note.title}</span>
+              <button
+                class="opacity-0 group-hover:opacity-100 hover:bg-gray-200 px-1 text-[10px] {isSelected ? 'text-black bg-white' : 'text-gray-700'} ml-1 rounded-none win98-button py-0"
+                onclick={(e) => {
+                  e.stopPropagation();
+                  startRename('note', note.id, note.title);
+                }}
+                title="Rename note (F2)"
+              >
+                ✎
+              </button>
+            {/if}
           </div>
         {/each}
 
@@ -357,3 +553,86 @@
     {/if}
   </div>
 </div>
+
+<!-- Windows 98 Context Menu -->
+{#if contextMenu}
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div 
+    class="fixed win98-window win98-border-outset bg-win98-surface shadow-xl z-[99999] py-1 flex flex-col text-xs text-black min-w-[150px]"
+    style="top: {contextMenu.y}px; left: {contextMenu.x}px;"
+    onclick={(e) => e.stopPropagation()}
+  >
+    {#if contextMenu.type === 'folder'}
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white flex items-center gap-2"
+        onclick={() => {
+          if (!contextMenu) return;
+          const folderId = contextMenu.id;
+          closeContextMenu();
+          willRememberStore.createNewTab('Untitled.txt', folderId);
+        }}
+      >
+        <img src="/icons/win98/notepad.png" alt="" class="w-3.5 h-3.5" style="image-rendering: pixelated;" />
+        <span>New Note</span>
+      </button>
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white flex items-center justify-between"
+        onclick={() => {
+          if (!contextMenu) return;
+          startRename('folder', contextMenu.id, contextMenu.name);
+        }}
+      >
+        <span>Rename</span>
+        <span class="text-gray-500 text-[10px]">F2</span>
+      </button>
+      <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white text-red-700"
+        onclick={() => {
+          if (!contextMenu) return;
+          const id = contextMenu.id;
+          closeContextMenu();
+          willRememberStore.deleteFolder(id);
+        }}
+      >
+        <span>Delete Folder</span>
+      </button>
+    {:else}
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white font-bold flex items-center gap-2"
+        onclick={() => {
+          if (!contextMenu) return;
+          const id = contextMenu.id;
+          closeContextMenu();
+          willRememberStore.openNoteInTab(id);
+        }}
+      >
+        <img src="/icons/win98/document.png" alt="" class="w-3.5 h-3.5" style="image-rendering: pixelated;" />
+        <span>Open</span>
+      </button>
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white flex items-center justify-between"
+        onclick={() => {
+          if (!contextMenu) return;
+          startRename('note', contextMenu.id, contextMenu.name);
+        }}
+      >
+        <span>Rename</span>
+        <span class="text-gray-500 text-[10px]">F2</span>
+      </button>
+      <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
+      <button 
+        class="px-3 py-1 text-left hover:bg-win98-title-active hover:text-white text-red-700"
+        onclick={() => {
+          if (!contextMenu) return;
+          const id = contextMenu.id;
+          closeContextMenu();
+          willRememberStore.deleteNote(id);
+        }}
+      >
+        <span>Delete</span>
+      </button>
+    {/if}
+  </div>
+{/if}

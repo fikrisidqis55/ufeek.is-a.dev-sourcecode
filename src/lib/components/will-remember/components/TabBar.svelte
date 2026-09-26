@@ -24,7 +24,14 @@
         : 'border-win98-border-light border-r-win98-border-dark bg-[#b0b0b0] text-gray-800 hover:bg-[#c8c8c8]'}"
       style="border-bottom: none; border-top-left-radius: 2px; border-top-right-radius: 2px; max-width: 180px;"
       onclick={() => willRememberStore.switchTab(tab.tabId)}
-      title={tab.title}
+      ondblclick={(e) => {
+        e.stopPropagation();
+        const newTitle = prompt('Rename note to:', tab.title);
+        if (newTitle && newTitle.trim()) {
+          willRememberStore.updateNoteTitle(tab.noteId, newTitle.trim());
+        }
+      }}
+      title="{tab.title} (Double click to rename)"
     >
       {#if tab.isPinned}
         <!-- svelte-ignore a11y_click_events_have_key_events -->

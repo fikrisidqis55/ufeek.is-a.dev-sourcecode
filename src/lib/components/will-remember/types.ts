@@ -56,6 +56,7 @@ export interface INoteRepository {
 
   // Folders
   createFolder(name: string, parentId?: string | null): FolderEntity;
+  renameFolder(folderId: string, newName: string): void;
   toggleFolder(folderId: string): void;
   deleteFolder(folderId: string): void;
   moveNoteToFolder(noteId: string, targetFolderId: string | null): void;
