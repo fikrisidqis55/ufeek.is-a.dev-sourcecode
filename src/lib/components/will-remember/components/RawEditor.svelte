@@ -120,9 +120,18 @@
     bind:this={textareaEl}
     value={content}
     oninput={handleInput}
-    onkeydown={handleKeydown}
+    onkeydown={(e) => {
+      if (!e.ctrlKey && !e.metaKey) {
+        e.stopPropagation();
+      }
+      handleKeydown(e);
+    }}
+    onkeypress={(e) => e.stopPropagation()}
+    onkeyup={(e) => {
+      e.stopPropagation();
+      updateCursor();
+    }}
     onclick={updateCursor}
-    onkeyup={updateCursor}
     onscroll={handleScroll}
     class="flex-1 w-full h-full p-2 font-mono text-xs text-black bg-white outline-none resize-none {willRememberStore.wordWrap
       ? 'whitespace-pre-wrap break-words'

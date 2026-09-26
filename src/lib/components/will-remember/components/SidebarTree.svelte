@@ -130,6 +130,11 @@
     y: number;
   } | null>(null);
 
+  function selectOnFocus(node: HTMLInputElement) {
+    node.focus();
+    node.select();
+  }
+
   function startRename(type: 'folder' | 'note', id: string, currentName: string) {
     playClickSound();
     editingTarget = { type, id };
@@ -222,7 +227,12 @@
         type="text"
         placeholder="Filter notes..."
         bind:value={searchQuery}
-        class="win98-border-inset w-full bg-white px-2 py-0.5 text-xs text-black placeholder:text-gray-400 outline-none"
+        class="win98-border-inset w-full bg-white px-2 py-0.5 text-xs text-black placeholder:text-gray-400 outline-none select-text cursor-text"
+        onkeydown={(e) => e.stopPropagation()}
+        onkeypress={(e) => e.stopPropagation()}
+        onkeyup={(e) => e.stopPropagation()}
+        onmousedown={(e) => e.stopPropagation()}
+        onpointerdown={(e) => e.stopPropagation()}
       />
       {#if searchQuery}
         <button 
@@ -243,8 +253,14 @@
         type="text"
         bind:value={newFolderName}
         placeholder="Folder name..."
-        class="win98-border-inset px-1.5 py-0.5 text-xs bg-white outline-none"
+        class="win98-border-inset px-1.5 py-0.5 text-xs bg-white outline-none select-text cursor-text"
+        use:selectOnFocus
+        onmousedown={(e) => e.stopPropagation()}
+        onpointerdown={(e) => e.stopPropagation()}
+        onkeypress={(e) => e.stopPropagation()}
+        onkeyup={(e) => e.stopPropagation()}
         onkeydown={(e) => {
+          e.stopPropagation();
           if (e.key === 'Enter') handleCreateFolderSubmit();
           if (e.key === 'Escape') isCreatingFolder = false;
         }}
@@ -301,9 +317,15 @@
             <input
               type="text"
               bind:value={editingName}
-              class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+              class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0 select-text cursor-text"
+              use:selectOnFocus
               autofocus
               onclick={(e) => e.stopPropagation()}
+              ondblclick={(e) => e.stopPropagation()}
+              onmousedown={(e) => e.stopPropagation()}
+              onpointerdown={(e) => e.stopPropagation()}
+              onkeypress={(e) => e.stopPropagation()}
+              onkeyup={(e) => e.stopPropagation()}
               onkeydown={(e) => {
                 e.stopPropagation();
                 if (e.key === 'Enter') commitRename();
@@ -368,10 +390,15 @@
               <input
                 type="text"
                 bind:value={editingName}
-                class="win98-border-inset bg-white text-black px-1 py-0 text-[11px] font-bold outline-none flex-1 min-w-0"
+                class="win98-border-inset bg-white text-black px-1 py-0 text-[11px] font-bold outline-none flex-1 min-w-0 select-text cursor-text"
+                use:selectOnFocus
                 autofocus
                 onclick={(e) => e.stopPropagation()}
                 ondblclick={(e) => e.stopPropagation()}
+                onmousedown={(e) => e.stopPropagation()}
+                onpointerdown={(e) => e.stopPropagation()}
+                onkeypress={(e) => e.stopPropagation()}
+                onkeyup={(e) => e.stopPropagation()}
                 onkeydown={(e) => {
                   e.stopPropagation();
                   if (e.key === 'Enter') commitRename();
@@ -428,10 +455,15 @@
                     <input
                       type="text"
                       bind:value={editingName}
-                      class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+                      class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0 select-text cursor-text"
+                      use:selectOnFocus
                       autofocus
                       onclick={(e) => e.stopPropagation()}
                       ondblclick={(e) => e.stopPropagation()}
+                      onmousedown={(e) => e.stopPropagation()}
+                      onpointerdown={(e) => e.stopPropagation()}
+                      onkeypress={(e) => e.stopPropagation()}
+                      onkeyup={(e) => e.stopPropagation()}
                       onkeydown={(e) => {
                         e.stopPropagation();
                         if (e.key === 'Enter') commitRename();
@@ -511,10 +543,15 @@
               <input
                 type="text"
                 bind:value={editingName}
-                class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0"
+                class="win98-border-inset bg-white text-black px-1 py-0 text-xs outline-none flex-1 min-w-0 select-text cursor-text"
+                use:selectOnFocus
                 autofocus
                 onclick={(e) => e.stopPropagation()}
                 ondblclick={(e) => e.stopPropagation()}
+                onmousedown={(e) => e.stopPropagation()}
+                onpointerdown={(e) => e.stopPropagation()}
+                onkeypress={(e) => e.stopPropagation()}
+                onkeyup={(e) => e.stopPropagation()}
                 onkeydown={(e) => {
                   e.stopPropagation();
                   if (e.key === 'Enter') commitRename();
