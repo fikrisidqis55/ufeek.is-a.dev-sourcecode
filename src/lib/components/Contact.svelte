@@ -63,13 +63,13 @@
 
     <form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-4 h-full">
       <div class="flex flex-col gap-1">
-        <label for="contact-name" class="text-sm">To:</label>
+        <label for="contact-name" class="text-xs sm:text-sm font-bold">To:</label>
         <input
           id="contact-name"
           type="text"
           name="name"
           bind:value={formData.name}
-          class="w-full px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50"
+          class="w-full px-2 py-1.5 win98-border-inset bg-white text-black outline-none focus:bg-blue-50 text-base sm:text-xs font-sans"
           placeholder="Your Name..."
           required
           disabled={loading}
@@ -77,13 +77,13 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="contact-email" class="text-sm">Reply-To (Email):</label>
+        <label for="contact-email" class="text-xs sm:text-sm font-bold">Reply-To (Email):</label>
         <input
           id="contact-email"
           type="email"
           name="email"
           bind:value={formData.email}
-          class="w-full px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50"
+          class="w-full px-2 py-1.5 win98-border-inset bg-white text-black outline-none focus:bg-blue-50 text-base sm:text-xs font-sans"
           placeholder="Your Email..."
           required
           disabled={loading}
@@ -91,12 +91,12 @@
       </div>
 
       <div class="flex flex-col gap-1 flex-1">
-        <label for="contact-message" class="text-sm">Message:</label>
+        <label for="contact-message" class="text-xs sm:text-sm font-bold">Message:</label>
         <textarea
           id="contact-message"
           name="message"
           bind:value={formData.message}
-          class="w-full flex-1 px-2 py-1 win98-border-inset bg-white text-black outline-none focus:bg-blue-50 resize-none"
+          class="w-full flex-1 px-2 py-1.5 win98-border-inset bg-white text-black outline-none focus:bg-blue-50 resize-none text-base sm:text-xs font-sans"
           placeholder="Type your message here..."
           required
           disabled={loading}

@@ -33,13 +33,13 @@
   <!-- Content Area -->
   <div class="flex-1 overflow-y-auto win98-border-inset bg-white p-2">
     {#if viewMode === 'icons'}
-      <div class="flex flex-wrap gap-6 p-4">
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap gap-3 sm:gap-6 p-3 sm:p-4 justify-items-center">
         {#each skills as skill}
-          <div class="flex flex-col items-center gap-1 w-20 cursor-pointer group">
-            <div class="w-10 h-10 flex items-center justify-center text-4xl group-active:brightness-75 group-focus:brightness-75">
+          <div class="flex flex-col items-center gap-1 w-16 sm:w-20 cursor-pointer group active:scale-95 transition-transform">
+            <div class="w-10 h-10 flex items-center justify-center text-3xl sm:text-4xl group-active:brightness-75 group-focus:brightness-75">
               <Icon icon={skill.icon} />
             </div>
-            <span class="text-xs text-center px-1 group-active:bg-win98-title-active group-active:text-white group-focus:bg-win98-title-active group-focus:text-white">
+            <span class="text-xs text-center px-0.5 group-active:bg-win98-title-active group-active:text-white group-focus:bg-win98-title-active group-focus:text-white">
               {skill.name}
             </span>
           </div>

@@ -29,7 +29,7 @@
       {#each osState.windows as win}
         {#if win.isOpen}
           <button 
-            class="win98-button flex-shrink-0 flex items-center gap-1.5 px-2 min-w-[100px] max-w-[160px] truncate h-full {osState.activeWindowId === win.id && !win.isMinimized ? 'win98-border-inset font-bold bg-[#e0e0e0]' : ''}"
+            class="win98-button flex-shrink-0 flex items-center gap-1.5 px-2 min-w-[70px] sm:min-w-[100px] max-w-[150px] truncate h-full {osState.activeWindowId === win.id && !win.isMinimized ? 'win98-border-inset font-bold bg-[#e0e0e0]' : ''}"
             onclick={() => osState.toggleMinimize(win.id)}
             title={win.title}
           >
@@ -48,9 +48,9 @@
   </div>
 
   <!-- System Tray -->
-  <div class="win98-border-inset h-full py-1 px-2.5 flex-shrink-0 flex items-center gap-2 bg-win98-surface mr-1 ml-1 select-none">
-    <img src="/icons/win98/floppy.png" alt="Floppy Disk" class="w-3.5 h-3.5 opacity-80" style="image-rendering: pixelated;" title="3.5in Floppy (A:)" />
-    <span class="text-xs">{timeString}</span>
+  <div class="win98-border-inset h-full py-1 px-1.5 sm:px-2.5 flex-shrink-0 flex items-center gap-1.5 sm:gap-2 bg-win98-surface mr-0.5 sm:mr-1 ml-0.5 sm:ml-1 select-none font-mono">
+    <img src="/icons/win98/floppy.png" alt="Floppy Disk" class="w-3.5 h-3.5 opacity-80 hidden sm:inline-block" style="image-rendering: pixelated;" title="3.5in Floppy (A:)" />
+    <span class="text-[11px] sm:text-xs">{timeString}</span>
   </div>
 
   {#if osState.startMenuOpen}

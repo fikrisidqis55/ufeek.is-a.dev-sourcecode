@@ -85,19 +85,19 @@
     </div>
 
     <!-- Explorer Grid -->
-    <div class="flex-1 overflow-y-auto win98-border-inset bg-white p-4">
-      <div class="flex flex-wrap gap-8">
+    <div class="flex-1 overflow-y-auto win98-border-inset bg-white p-3 sm:p-4">
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:flex md:flex-wrap gap-3 sm:gap-8 justify-items-center">
         {#each projects as project}
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div 
-            class="flex flex-col items-center gap-1 w-24 cursor-pointer group"
+            class="flex flex-col items-center gap-1 w-20 sm:w-24 cursor-pointer group active:scale-95 transition-transform"
             on:click={() => (selectedProject = project)}
           >
             <div class="w-12 h-12 flex items-center justify-center group-active:brightness-75">
               <img src="/icons/win98/executable.png" alt="" class="w-8 h-8 select-none pointer-events-none" style="image-rendering: pixelated;" />
             </div>
-            <span class="text-xs text-center px-1 leading-tight group-hover:underline group-active:bg-win98-title-active group-active:text-white">
+            <span class="text-xs text-center px-0.5 leading-tight group-hover:underline group-active:bg-win98-title-active group-active:text-white">
               {project.title}.exe
             </span>
           </div>

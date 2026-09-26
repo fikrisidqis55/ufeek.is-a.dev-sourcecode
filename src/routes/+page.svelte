@@ -51,7 +51,7 @@
 
 <!-- Desktop Environment -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="fixed inset-0 overflow-hidden bg-win98-bg select-none" role="presentation" onclick={() => {
+<div class="fixed inset-0 overflow-hidden bg-win98-bg select-none overscroll-none" role="presentation" onclick={() => {
     // Clicking desktop clears icon selection
     osState.selectIcon(null);
 }}>
@@ -59,19 +59,27 @@
   <CursorFollower />
 
   <!-- Desktop Icons -->
-  {#each desktopIcons as icon}
-    <DesktopIcon {...icon} windowId={icon.id} />
-  {/each}
+  {#if osState.isMobile}
+    <div class="absolute inset-0 p-4 pb-14 overflow-y-auto grid grid-cols-3 sm:grid-cols-4 gap-3 place-items-center auto-rows-max z-0">
+      {#each desktopIcons as icon}
+        <DesktopIcon {...icon} windowId={icon.id} />
+      {/each}
+    </div>
+  {:else}
+    {#each desktopIcons as icon}
+      <DesktopIcon {...icon} windowId={icon.id} />
+    {/each}
+  {/if}
 
   <!-- Windows -->
   <Window windowId="welcome">
-    <div class="h-[500px] w-full flex items-center justify-center p-4" style="background: var(--background);">
+    <div class="h-full w-full flex items-center justify-center p-2 sm:p-4 bg-win98-surface">
       <Hero />
     </div>
   </Window>
 
   <Window windowId="about">
-    <div class="p-4" style="background: var(--background);">
+    <div class="h-full w-full flex flex-col min-h-0 bg-win98-surface">
         <AboutMe />
     </div>
   </Window>
@@ -83,19 +91,19 @@
   </Window>
 
   <Window windowId="techstack">
-    <div class="p-4" style="background: var(--background);">
+    <div class="h-full w-full flex flex-col min-h-0 bg-win98-surface">
         <TechStack />
     </div>
   </Window>
 
   <Window windowId="projects">
-    <div class="p-4" style="background: var(--background);">
+    <div class="h-full w-full flex flex-col min-h-0 bg-win98-surface">
         <Projects />
     </div>
   </Window>
 
   <Window windowId="contact">
-    <div class="p-4" style="background: var(--background);">
+    <div class="h-full w-full flex flex-col min-h-0 bg-win98-surface">
         <Contact />
     </div>
   </Window>

@@ -18,6 +18,15 @@ export function createOSState() {
   let nextZIndex = $state(10);
   let startMenuOpen = $state(false);
   let selectedIconId = $state<string | null>(null);
+  let isMobile = $state(false);
+
+  if (typeof window !== 'undefined') {
+    const updateMobile = () => {
+      isMobile = window.innerWidth < 768;
+    };
+    updateMobile();
+    window.addEventListener('resize', updateMobile);
+  }
 
   function selectIcon(id: string | null) {
       selectedIconId = id;
@@ -97,6 +106,7 @@ export function createOSState() {
     get activeWindowId() { return activeWindowId; },
     get startMenuOpen() { return startMenuOpen; },
     get selectedIconId() { return selectedIconId; },
+    get isMobile() { return isMobile; },
     openWindow,
     closeWindow,
     minimizeWindow,
