@@ -1,6 +1,7 @@
 <script lang="ts">
   import { projectsList, type ProjectExecutable } from "$lib/data/projects";
   import CirrustLiteMock from "$lib/components/projects/CirrustLiteMock.svelte";
+  import LiriqMock from "$lib/components/projects/LiriqMock.svelte";
   import KansaiMock from "$lib/components/projects/KansaiMock.svelte";
   import BpnMock from "$lib/components/projects/BpnMock.svelte";
   import { Play, Info, Image as ImageIcon, RotateCcw, ExternalLink, Cpu, CheckCircle2 } from "lucide-svelte";
@@ -107,10 +108,30 @@
         <!-- TAB: RUN PROGRAM -->
         {#if project.id === 'cirrust-lite'}
           <CirrustLiteMock />
+        {:else if project.id === 'liriq-rfid'}
+          <LiriqMock />
         {:else if project.id === 'kansai-custom'}
-          <KansaiMock />
+          <div class="h-full flex flex-col">
+            <div class="bg-amber-100 border-b border-amber-300 px-3 py-1.5 flex items-center justify-between text-[11px] text-amber-900 font-sans shrink-0">
+              <span class="font-semibold">⚠️ PROTOTYPE DRAFT:</span>
+              <span class="text-amber-800">State: Pending accuracy polish against production manufacturing forms.</span>
+              <span class="bg-amber-200 px-1.5 py-0.5 rounded text-[10px] font-mono">DRAFT</span>
+            </div>
+            <div class="flex-1 min-h-0">
+              <KansaiMock />
+            </div>
+          </div>
         {:else if project.id === 'bpn-ekantah'}
-          <BpnMock />
+          <div class="h-full flex flex-col">
+            <div class="bg-amber-100 border-b border-amber-300 px-3 py-1.5 flex items-center justify-between text-[11px] text-amber-900 font-sans shrink-0">
+              <span class="font-semibold">⚠️ PROTOTYPE DRAFT:</span>
+              <span class="text-amber-800">State: Pending accuracy polish against official ATR/BPN portal screens.</span>
+              <span class="bg-amber-200 px-1.5 py-0.5 rounded text-[10px] font-mono">DRAFT</span>
+            </div>
+            <div class="flex-1 min-h-0">
+              <BpnMock />
+            </div>
+          </div>
         {:else if project.liveUrl}
           <iframe 
             src={project.liveUrl} 

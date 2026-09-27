@@ -200,3 +200,17 @@ export interface ProjectExecutable {
 1. **Engagement Time:** Peningkatan durasi kunjungan pengunjung karena bisa mencoba langsung aplikasi di dalam portofolio.
 2. **Authenticity:** Zero break dalam ilusi desktop Windows 98 — tidak ada redirect tiba-tiba yang membingungkan pengunjung.
 3. **Client Appeal:** Memberikan impresi teknis yang kuat ("wah" factor) kepada recruiter dan tech lead yang mencoba portofolio.
+
+---
+
+## 10. Project Executable Registry & Sandbox Status
+
+| Executable Name | Proyek | Mode | Status Implementasi | Catatan & Integrasi |
+|---|---|---|:---:|---|
+| `Cirrust_Lite.exe` | Cirrust Lite Customer Portal | Interactive Sandbox (`CirrustLiteMock.svelte`) | ✅ Production Ready | Form multi-state, validation, auto license .zip download |
+| `Liriq_RFID.exe` | Liriq RFID Tracking System | Interactive Sandbox (`LiriqMock.svelte`) | ✅ Production Ready | Authentic AntD table, status pills, RFID telemetry, modals, CSV report export |
+| `Kansai_Custom.exe` | Kansai Paint Manufacturing | Interactive Sandbox (`KansaiMock.svelte`) | ⚠️ Draft (Pending Polish) | Skipped sementara per feedback pengguna; pending penyesuaian akurasi form formula |
+| `EKantah_BPN.exe` | E-Kantah ATR/BPN | Interactive Sandbox (`BpnMock.svelte`) | ⚠️ Draft (Pending Polish) | Skipped sementara per feedback pengguna; pending penyesuaian akurasi alur pendaftaran |
+| `Cirrust_Workflow.exe`| Cirrust Approval Engine | System Specs (.NFO) | 📋 Specs Mode | Arsitektur & visual state inspector |
+| `Impulse_Web.exe` | Impulse Executive BI | System Specs (.NFO) | 📋 Specs Mode | Executive KPI metrics |
+

@@ -68,10 +68,16 @@
             onclick={() => handleIconClick(project)}
           >
             {#if project.hasMock}
-              <div class="absolute -top-1 -right-1 bg-amber-400 text-black text-[9px] font-bold px-1 rounded-sm shadow-sm flex items-center gap-0.5 border border-amber-600">
-                <Sparkles size={8} />
-                <span>MOCK</span>
-              </div>
+              {#if project.status === 'draft'}
+                <div class="absolute -top-1 -right-1 bg-amber-200 text-amber-900 text-[9px] font-bold px-1 rounded-sm shadow-sm flex items-center gap-0.5 border border-amber-400">
+                  <span>DRAFT</span>
+                </div>
+              {:else}
+                <div class="absolute -top-1 -right-1 bg-amber-400 text-black text-[9px] font-bold px-1 rounded-sm shadow-sm flex items-center gap-0.5 border border-amber-600">
+                  <Sparkles size={8} />
+                  <span>MOCK</span>
+                </div>
+              {/if}
             {/if}
 
             <div class="w-12 h-12 flex items-center justify-center group-active:brightness-75">
@@ -136,7 +142,11 @@
               <span class="text-xs bg-gray-200 px-2 py-0.5 win98-border-outset font-mono font-semibold">
                 {selectedProject.exeName}
               </span>
-              {#if selectedProject.hasMock}
+              {#if selectedProject.status === 'draft'}
+                <span class="bg-amber-100 text-amber-800 border border-amber-300 text-[11px] px-2 py-0.5 rounded font-semibold flex items-center gap-1">
+                  <span>Draft Prototype (Pending Polish)</span>
+                </span>
+              {:else if selectedProject.hasMock}
                 <span class="bg-teal-600 text-white text-[11px] px-2 py-0.5 rounded font-semibold flex items-center gap-1">
                   <CheckCircle2 size={12} />
                   <span>Interactive Sandbox Ready</span>

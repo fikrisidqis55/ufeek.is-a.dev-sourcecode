@@ -18,6 +18,7 @@ export interface ProjectExecutable {
     metrics?: string[];
   };
   hasMock?: boolean;
+  status?: 'active' | 'draft' | 'pending';
 }
 
 export const projectsList: ProjectExecutable[] = [
@@ -29,6 +30,7 @@ export const projectsList: ProjectExecutable[] = [
     description: "High-conversion registration portal for Cirrust Lite, offering free 6-month software licenses.",
     type: "sandbox",
     hasMock: true,
+    status: "active",
     technologies: ["Next.js 15", "TypeScript", "React 19", "TanStack React Query", "Tailwind CSS", "Axios"],
     client: "PT Quadrant Synergy International",
     role: "Frontend Engineer",
@@ -47,6 +49,36 @@ export const projectsList: ProjectExecutable[] = [
         "Conversion rate improved by +28%",
         "Client-side bundle optimized for < 100ms First Contentful Paint",
         "100% responsive across mobile, tablet, and widescreen desktop"
+      ]
+    }
+  },
+  {
+    id: "liriq-rfid",
+    title: "Liriq RFID",
+    exeName: "Liriq_RFID.exe",
+    icon: "/icons/win98/executable.png",
+    description: "Enterprise RFID asset tracking and warehouse inventory management dashboard integrated with handheld RFID readers.",
+    type: "sandbox",
+    hasMock: true,
+    status: "active",
+    technologies: ["Next.js 15", "TypeScript", "Ant Design", "TanStack React Query", "Tailwind CSS", "Zustand"],
+    client: "Quadrant System Integrator",
+    role: "Frontend Engineer",
+    year: "2024 - 2025",
+    image: "/projects/liriq/assets/logo/liriqLogoOriginal.svg",
+    details: "/projects/liriq/assets/logo/liriqLogoOriginal.svg",
+    specs: {
+      overview: "Comprehensive enterprise RFID asset tracking and warehouse inventory management dashboard integrated with handheld RFID readers (Zebra, Chainway, Urovo) for rapid stocktaking, inbound/outbound tag mapping, and discrepancy audits.",
+      highlights: [
+        "Built high-density tabular workflows with client-side sorting, status pills, and search filtering",
+        "Engineered batch Excel (.xlsx) job importing with template validation and real-time reconciliation",
+        "Implemented RFID scanner device telemetry monitoring battery status, reader health, and sync logs",
+        "Designed modular workflow execution supporting Map Tag, Inventory Checking, and Discrepancy Audits"
+      ],
+      metrics: [
+        "Scans Processed: 50,000+ RFID Tags/Hour",
+        "Audit Time Reduction: 85% compared to manual barcodes",
+        "Handheld Hardware Support: Zebra, Chainway, Urovo"
       ]
     }
   },
@@ -176,9 +208,10 @@ export const projectsList: ProjectExecutable[] = [
     title: "Kansai Custom",
     exeName: "Kansai_Custom.exe",
     icon: "/icons/win98/executable.png",
-    description: "Custom enterprise manufacturing process portal powered by the Cirrust Engine.",
+    description: "[Draft / Pending Accuracy Polish] Custom enterprise manufacturing process portal powered by the Cirrust Engine.",
     type: "sandbox",
     hasMock: true,
+    status: "draft",
     technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
     client: "Kansai Paint Indonesia",
     role: "Frontend Engineer",
@@ -186,7 +219,7 @@ export const projectsList: ProjectExecutable[] = [
     image: "/projects/kansai-custompage-form.png",
     details: "/projects/kansai-custompage-form.png",
     specs: {
-      overview: "Tailored manufacturing workflow for Kansai Paint, digitizing order dispatch and production quality control.",
+      overview: "[DRAFT / PENDING TASK: Prototype currently pending accuracy alignment with production specs] Tailored manufacturing workflow for Kansai Paint, digitizing order dispatch and production quality control.",
       highlights: [
         "Created specialized paint formula order forms with dynamic matrix inputs",
         "Integrated audit log compliance with ISO manufacturing requirements"
@@ -198,9 +231,10 @@ export const projectsList: ProjectExecutable[] = [
     title: "E-Kantah BPN",
     exeName: "EKantah_BPN.exe",
     icon: "/icons/win98/executable.png",
-    description: "Self-service land registration and certificate issuance portal for Ministry of Agrarian Affairs.",
+    description: "[Draft / Pending Accuracy Polish] Self-service land registration and certificate issuance portal for Ministry of Agrarian Affairs.",
     type: "sandbox",
     hasMock: true,
+    status: "draft",
     technologies: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
     client: "Kementerian ATR/BPN",
     role: "Frontend Engineer",
@@ -208,7 +242,7 @@ export const projectsList: ProjectExecutable[] = [
     image: "/projects/bpn-landing-page.png",
     details: "/projects/bpn-landing-page.png",
     specs: {
-      overview: "Citizen-facing digital portal enabling property owners to register land rights, verify plot coordinates, and book appointments at land offices.",
+      overview: "[DRAFT / PENDING TASK: Prototype currently pending accuracy alignment with production specs] Citizen-facing digital portal enabling property owners to register land rights, verify plot coordinates, and book appointments at land offices.",
       highlights: [
         "Designed accessible, high-contrast portal adhering to government service standards",
         "Integrated citizen identity verification (NIK/KTP) and land plot document uploads",
