@@ -1,6 +1,8 @@
 <script lang="ts">
   import { projectsList, type ProjectExecutable } from "$lib/data/projects";
   import CirrustLiteMock from "$lib/components/projects/CirrustLiteMock.svelte";
+  import KansaiMock from "$lib/components/projects/KansaiMock.svelte";
+  import BpnMock from "$lib/components/projects/BpnMock.svelte";
   import { Play, Info, Image as ImageIcon, RotateCcw, ExternalLink, Cpu, CheckCircle2 } from "lucide-svelte";
 
   interface Props {
@@ -105,6 +107,10 @@
         <!-- TAB: RUN PROGRAM -->
         {#if project.id === 'cirrust-lite'}
           <CirrustLiteMock />
+        {:else if project.id === 'kansai-custom'}
+          <KansaiMock />
+        {:else if project.id === 'bpn-ekantah'}
+          <BpnMock />
         {:else if project.liveUrl}
           <iframe 
             src={project.liveUrl} 

@@ -39,6 +39,8 @@
     { id: 'doom', title: 'DOOM.EXE', icon: '/icons/win98/doom.png', x: 20, y: 620 },
     { id: 'will-remember', title: 'will-remember', icon: '/icons/win98/notepad.png', x: 120, y: 20 },
     { id: 'app-cirrust-lite', title: 'Cirrust Lite.exe', icon: '/icons/win98/executable.png', x: 120, y: 120 },
+    { id: 'app-kansai-custom', title: 'Kansai.exe', icon: '/icons/win98/executable.png', x: 120, y: 220 },
+    { id: 'app-bpn-ekantah', title: 'E-Kantah.exe', icon: '/icons/win98/executable.png', x: 120, y: 320 },
   ];
 </script>
 
