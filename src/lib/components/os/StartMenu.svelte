@@ -82,5 +82,19 @@
       <img src="/icons/win98/contact.png" alt="" class="w-5 h-5 pointer-events-none select-none flex-shrink-0" style="image-rendering: pixelated;" />
       <span>Contact</span>
     </button>
+
+    <div class="h-px bg-win98-border-dark border-b border-white my-1"></div>
+
+    <button 
+      class="flex items-center gap-3 p-2 hover:bg-win98-title-active hover:text-win98-title-text active:bg-win98-title-active active:text-win98-title-text cursor-pointer text-left min-h-[36px]"
+      onclick={() => {
+        osState.resetDesktopIcons();
+        osState.toggleStartMenu();
+      }}
+      title="Reset desktop icons layout to default"
+    >
+      <span class="w-5 text-center text-sm">🔄</span>
+      <span>Reset Desktop</span>
+    </button>
   </div>
 </div>

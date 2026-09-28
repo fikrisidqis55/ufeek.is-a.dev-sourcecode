@@ -11,6 +11,7 @@
   import CursorFollower from "$lib/components/CursorFollower.svelte";
   
   import DesktopIcon from "$lib/components/os/DesktopIcon.svelte";
+  import DesktopContextMenu from "$lib/components/os/DesktopContextMenu.svelte";
   import Window from "$lib/components/os/Window.svelte";
   import AppRunner from "$lib/components/os/AppRunner.svelte";
   import { onMount } from "svelte";
@@ -28,21 +29,6 @@
       });
     }
   });
-
-  const desktopIcons = [
-    { id: 'welcome', title: 'My Computer', icon: '/icons/win98/computer.png', x: 20, y: 20 },
-    { id: 'about', title: 'About Me', icon: '/icons/win98/about.png', x: 20, y: 120 },
-    { id: 'experience', title: 'Experience', icon: '/icons/win98/experience.png', x: 20, y: 220 },
-    { id: 'techstack', title: 'Tech Stack', icon: '/icons/win98/techstack.png', x: 20, y: 320 },
-    { id: 'projects', title: 'Projects', icon: '/icons/win98/projects.png', x: 20, y: 420 },
-    { id: 'contact', title: 'Contact', icon: '/icons/win98/contact.png', x: 20, y: 520 },
-    { id: 'doom', title: 'DOOM.EXE', icon: '/icons/win98/doom.png', x: 20, y: 620 },
-    { id: 'will-remember', title: 'will-remember', icon: '/icons/win98/notepad.png', x: 120, y: 20 },
-    { id: 'app-cirrust-lite', title: 'Cirrust Lite.exe', icon: '/icons/win98/executable.png', x: 120, y: 120 },
-    { id: 'app-liriq-rfid', title: 'Liriq RFID.exe', icon: '/icons/win98/executable.png', x: 120, y: 220 },
-    { id: 'app-kansai-custom', title: 'Kansai.exe', icon: '/icons/win98/executable.png', x: 120, y: 320 },
-    { id: 'app-bpn-ekantah', title: 'E-Kantah.exe', icon: '/icons/win98/executable.png', x: 120, y: 420 },
-  ];
 </script>
 
 <svelte:head>
@@ -56,25 +42,45 @@
 
 <!-- Desktop Environment -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="fixed inset-0 overflow-hidden bg-win98-bg select-none overscroll-none" role="presentation" onclick={() => {
-    // Clicking desktop clears icon selection
+<div 
+  class="fixed inset-0 overflow-hidden bg-win98-bg select-none overscroll-none" 
+  role="presentation" 
+  onclick={() => {
+    // Clicking desktop clears icon selection & context menu
     osState.selectIcon(null);
-}}>
+    osState.closeDesktopContextMenu();
+  }}
+  oncontextmenu={(e) => {
+    e.preventDefault();
+    osState.openDesktopContextMenu(e.clientX, e.clientY);
+  }}
+>
   <GlitchingBackground />
   <CursorFollower />
 
   <!-- Desktop Icons -->
   {#if osState.isMobile}
     <div class="absolute inset-0 p-4 pb-14 overflow-y-auto grid grid-cols-3 sm:grid-cols-4 gap-3 place-items-center auto-rows-max z-0">
-      {#each desktopIcons as icon}
+      {#each osState.desktopIcons as icon (icon.id)}
         <DesktopIcon {...icon} windowId={icon.id} />
       {/each}
     </div>
   {:else}
-    {#each desktopIcons as icon}
+    <!-- Snap to Grid Target Ghost Preview -->
+    {#if osState.draggedIconId && osState.snapPreview}
+      <div 
+        class="absolute border border-dashed border-white/70 bg-white/10 pointer-events-none z-[5]"
+        style="left: {osState.snapPreview.x}px; top: {osState.snapPreview.y}px; width: 80px; height: 84px;"
+      ></div>
+    {/if}
+
+    {#each osState.desktopIcons as icon (icon.id)}
       <DesktopIcon {...icon} windowId={icon.id} />
     {/each}
   {/if}
+
+  <!-- Desktop Context Menu (Right Click) -->
+  <DesktopContextMenu />
 
   <!-- Windows -->
   <Window windowId="welcome">
